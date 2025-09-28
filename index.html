@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>collector</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <header>
+      <h1>Brainrotini Gamini</h1>
+      <div class="stat card">
+        <div id="incomeBtn" class="small" role="status">Income: $0/s</div>
+        <div class="currency-stack">
+          <div class="big" id="currency">$0</div>
+          <div class="muted">Cash</div>
+        </div>
+      </div>
+    </header>
+
+    <div class="main-grid">
+      <div class="card">
+        <div class="row" style="justify-content:space-between;align-items:center">
+          <div>
+            <div class="muted" style="color:#e6eef8; font-weight:600">Brainrots</div>
+          </div>
+          <div id="refreshText" class="muted" style="color:#e6eef8; font-weight:600">New Rots in: <span id="countdown">15</span>s</div>
+        </div>
+        <div class="list" id="spawnList"></div>
+      </div>
+
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="muted">Brainrots Owned</div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <div class="small" id="sellDropdownToggle" style="cursor:pointer;user-select:none">Sell</div>
+            <div id="sellDropdown" style="position:relative">
+              <div id="sellDropdownMenu" style="display:none;position:absolute;right:0;top:36px;min-width:160px;background:var(--card);border-radius:8px;padding:6px;box-shadow:0 6px 20px rgba(2,6,23,.6);">
+                <div class="sell-option" data-rarity="all" style="padding:6px;cursor:pointer">Sell All</div>
+                <div class="sell-option" data-rarity="Secret" style="padding:6px;cursor:pointer">Sell Secret</div>
+                <div class="sell-option" data-rarity="Mythic" style="padding:6px;cursor:pointer">Sell Mythic</div>
+                <div class="sell-option" data-rarity="Legendary" style="padding:6px;cursor:pointer">Sell Legendary</div>
+                <div class="sell-option" data-rarity="Epic" style="padding:6px;cursor:pointer">Sell Epic</div>
+                <div class="sell-option" data-rarity="Rare" style="padding:6px;cursor:pointer">Sell Rare</div>
+                <div class="sell-option" data-rarity="Uncommon" style="padding:6px;cursor:pointer">Sell Uncommon</div>
+                <div class="sell-option" data-rarity="Common" style="padding:6px;cursor:pointer">Sell Common</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="owned" style="height:570px;overflow:auto;margin-top:8px;background:#071122;padding:8px;border-radius:8px"></div>
+      </div>
+    </div>
+    <div style="max-width:900px;margin:12px auto;text-align:right; margin-top:-5px; width: 100%">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div style="text-align:left"><button id="collectionBtn" class="small">Collection</button></div>
+        <div style="text-align:right"><button id="resetBtn" class="btn-danger">Reset Save</button></div>
+      </div>
+    </div>
+  </div>
+  <script src="main.js" defer></script>
+</body>
+</html>
