@@ -135,7 +135,7 @@ const CREATURES = [
   {name:'Tifforny Pooterus',rarity:'OG',weight:0.00001,price:50000000000,income:2500000},
 ];
 
-let state = {currency:25,vault:[],conveyor:[],multiplier:1,discovered:[],ownedCounts:{}};
+let state = {currency:25,vault:[],conveyor:[],multiplier:1,discovered:[],ownedCounts:{},usedCodes:[]};
 
 // Rarity ranking helper (higher = rarer)
 const RARITY_RANK = {og:9, secret:8, 'Brainrot God':7, mythic:6, legendary:5, epic:4, rare:3, uncommon:2, common:1};
@@ -149,6 +149,8 @@ function loadState(){
   if(saved) state = JSON.parse(saved);
   // backfill discovered if missing (older saves)
   if(!state.discovered) state.discovered = [];
+  // backfill usedCodes if missing (older saves)
+  if(!state.usedCodes) state.usedCodes = [];
   // ensure ownedCounts exists and backfill from current vault if missing
   if(!state.ownedCounts) {
     state.ownedCounts = {};
@@ -255,7 +257,7 @@ renderAll();
 // Modal markup insertion (created here so elements exist)
 const modalHtml = `
 <div id="aboutModal" class="modal-overlay hidden">
-  <div class="modal-box">
+  <div class="modal-box" style="max-height:80vh;overflow-y:auto">
     <div style="font-weight:700;margin-bottom:8px">About Brainrotini Gamini</div>
     <div style="color:var(--muted);margin-bottom:16px">
       <p>Welcome to Brainrotini Gamini! Collect brainrots and make the most money!</p>
@@ -268,6 +270,12 @@ const modalHtml = `
       </ul>
       <p>Version History:</p>
         <ul style="margin-left:20px">
+        <li>Version: 0.1.5</li>
+        <ul style="margin-left:20px">
+          <li>Codes can now only be redeemed once</li>
+          <li>Adjusted the "About" section to scroll</li>
+          <li>Next update will have HUGE changes, stay tuned!</li>
+        </ul>
         <li>Version: 0.1.4</li>
         <ul style="margin-left:20px">
           <li>Added rewards codes (You'll have to find where they go!)</li>
@@ -461,7 +469,7 @@ document.addEventListener('click', (e) => {
   if (target.closest && target.closest('#confirmReset')) {
     // clear save and reset in-memory state
     localStorage.removeItem('collector');
-    state = {currency:25,vault:[],conveyor:[],multiplier:1,discovered:[],ownedCounts:{}};
+    state = {currency:25,vault:[],conveyor:[],multiplier:1,discovered:[],ownedCounts:{},usedCodes:[]};
     saveState();
     spawnRandom();
     refreshRemaining = REFRESH_INTERVAL; // Reset the refresh timer
@@ -545,6 +553,13 @@ function redeemCode() {
     return;
   }
   
+  // Check if code has already been used
+  if (state.usedCodes.includes(code)) {
+    messageEl.textContent = 'This code has already been redeemed.';
+    messageEl.style.color = '#ef4444';
+    return;
+  }
+  
   // Define available codes
   const codes = {
     'WELCOME': { type: 'money', amount: 10000, description: 'Welcome bonus' },
@@ -579,6 +594,9 @@ function redeemCode() {
         messageEl.style.color = '#10b981';
       }
     }
+    
+    // Mark code as used
+    state.usedCodes.push(code);
     
     // Clear the code after successful redemption
     codeInput.value = '';
