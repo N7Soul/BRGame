@@ -1,5 +1,5 @@
 const CREATURES = [
-  // common
+  // Common
   {name:'Noobini Pizzanini',rarity:'Common',weight:100,price:25,income:1},
   {name:'Lirili Larila',rarity:'Common',weight:95,price:250,income:3},
   {name:'Tim Cheese',rarity:'Common',weight:90,price:500,income:5},
@@ -9,7 +9,7 @@ const CREATURES = [
   {name:'Pipi Kiwi',rarity:'Common',weight:70,price:1500,income:13},
   {name:'Racooni Jandelini',rarity:'Common',weight:65,price:1300,income:12},
   {name:'Pipi Corni',rarity:'Common',weight:60,price:1700,income:14},
-  // rare
+  // Rare
   {name:'Trippi Troppi',rarity:'Rare',weight:40,price:2000,income:15},
   {name:'Gangster Footera',rarity:'Rare',weight:35,price:4000,income:30},
   {name:'Bandito Bobritto',rarity:'Rare',weight:32,price:4500,income:35},
@@ -18,7 +18,7 @@ const CREATURES = [
   {name:'Ta Ta Ta Ta Sahur',rarity:'Rare',weight:25,price:7500,income:55},
   {name:'Tric Trac Baraboom',rarity:'Rare',weight:22,price:9000,income:65},
   {name:'Pipi Avocado',rarity:'Rare',weight:20,price:9500,income:70},
-  // epic
+  // Epic
   {name:'Cappuccino Assassino',rarity:'Epic',weight:12,price:10000,income:75},
   {name:'Brr Brr Patapim',rarity:'Epic',weight:10,price:15000,income:100},
   {name:'Trulimero Trulicina',rarity:'Epic',weight:9,price:20000,income:125},
@@ -30,7 +30,7 @@ const CREATURES = [
   {name:'Avocadini Guffo',rarity:'Epic',weight:5,price:35000,income:225},
   {name:'Salamino Penguino',rarity:'Epic',weight:4.5,price:40000,income:250},
   {name:'Penguino Cocosino',rarity:'Epic',weight:4,price:45000,income:300},
-  // legendary
+  // Legendary
   {name:'Burbaloni Loliloli',rarity:'Legendary',weight:2.5,price:35000,income:200},
   {name:'Chimpazini Bananini',rarity:'Legendary',weight:2.2,price:50000,income:300},
   {name:'Ballerina Cappuccina',rarity:'Legendary',weight:2,price:100000,income:500},
@@ -43,7 +43,7 @@ const CREATURES = [
   {name:'Cocosini Mama',rarity:'Legendary',weight:0.8,price:285000,income:1200},
   {name:'Sigma Boy',rarity:'Legendary',weight:0.7,price:325000,income:1300},
   {name:'Pi Pi Watermelon',rarity:'Legendary',weight:0.6,price:135000,income:1300},
-  // mythic
+  // Mythic
   {name:'Frigo Camelo',rarity:'Mythic',weight:0.4,price:300000,income:1400},
   {name:'Orangutini Ananassini',rarity:'Mythic',weight:0.35,price:400000,income:1700},
   {name:'Rhino Toasterino',rarity:'Mythic',weight:0.3,price:450000,income:2100},
@@ -57,7 +57,7 @@ const CREATURES = [
   {name:'Te Te Te Sahur',rarity:'Mythic',weight:0.09,price:2500000,income:9500},
   {name:'Lerulerulerule',rarity:'Mythic',weight:0.08,price:3500000,income:8700},
   {name:'Tracoducotulu Delapeladustuz',rarity:'Mythic',weight:0.07,price:3000000,income:12000},
-  // brainrot god
+  // Brainrot God
   {name:'Coco Elefanto',rarity:'Brainrot God',weight:0.05,price:5000000,income:10000},
   {name:'Girafa Celestre',rarity:'Brainrot God',weight:0.048,price:7500000,income:20000},
   {name:'Gattatino Nyanino',rarity:'Brainrot God',weight:0.046,price:7500000,income:35000},
@@ -85,7 +85,7 @@ const CREATURES = [
   {name:'Los Orcalitos',rarity:'Brainrot God',weight:0.006,price:45000000,income:235000},
   {name:'Los Tipi Tacos',rarity:'Brainrot God',weight:0.005,price:46000000,income:260000},
   {name:'Bombardini Tortinii',rarity:'Brainrot God',weight:0.004,price:50000000,income:225000},
-  // secret
+  // Secret
   {name:'Las Sis',rarity:'Secret',weight:0.003,price:25000000,income:17500000},
   {name:'La Vacca Staturno Saturnita',rarity:'Secret',weight:0.0029,price:50000000,income:250000},
   {name:'Blackhole Goat',rarity:'Secret',weight:0.0028,price:75000000,income:400000},
@@ -123,7 +123,7 @@ const CREATURES = [
   {name:'Ketchuru and Musturu',rarity:'Secret',weight:0.00014,price:7500000000,income:42500000},
   {name:'Garama and Madundung',rarity:'Secret',weight:0.00013,price:10000000000,income:50000000},
   {name:'Dragon Cannelloni',rarity:'Secret',weight:0.00012,price:100000000000,income:100000000},
-  // og
+  // OG
   {name:'Derktism Trainino',rarity:'OG',weight:0.00001,price:500000000000,income:250000000},
   {name:'Davidinni Prereleasito',rarity:'OG',weight:0.00001,price:500000000000,income:250000000},
   {name:'Tynino Swolgrande',rarity:'OG',weight:0.00001,price:500000000000,income:250000000},
@@ -177,7 +177,7 @@ function renderSpawner(){
   const canAfford = state.currency >= c.price;
   const div=document.createElement('div');div.className='item rarity-'+c.rarity;
   const buttonClass = canAfford ? '' : ' disabled';
-  div.innerHTML=`<div><div class='creature-name'>${c.name}</div><div class='rarity-text muted'>${c.rarity} - Monini: ${c.income} Cash/Sec</div></div><div style='text-align:center;display:flex;align-items:center;justify-content:center'><button class='${buttonClass}'>Buy for $${fmt(c.price)}</button></div>`;
+  div.innerHTML=`<div><div class='creature-name'>${c.name}</div><div class='rarity-text muted'>${c.rarity} - Monini: ${c.income} per Sec</div></div><div style='text-align:center;display:flex;align-items:center;justify-content:center'><button class='${buttonClass}'>Buy for $${fmt(c.price)}</button></div>`;
     spawnListEl.appendChild(div);
     div.querySelector('button').onclick=()=>{
       if(state.currency<c.price) return;
@@ -206,7 +206,7 @@ function renderOwned(){
   sorted.forEach((c)=>{
     const sell=Math.floor(c.price*0.4);
   const div=document.createElement('div');div.className='item rarity-'+c.rarity;
-  div.innerHTML=`<div><div class='creature-name'>${c.name}</div><div class='rarity-text muted'>${c.rarity} • income ${c.income} Cash/Sec</div></div><div style='text-align:center;display:flex;align-items:center;justify-content:center'><button>Sell for $${fmt(sell)}</button></div>`;
+  div.innerHTML=`<div><div class='creature-name'>${c.name}</div><div class='rarity-text muted'>${c.rarity} • income ${c.income} per Sec</div></div><div style='text-align:center;display:flex;align-items:center;justify-content:center'><button>Sell for $${fmt(sell)}</button></div>`;
     ownedEl.appendChild(div);
     div.querySelector('button').onclick=()=>{
       // find the actual index of this item in state.vault (handles duplicates correctly)
@@ -223,7 +223,7 @@ function renderAll(){
   currencyEl.textContent=`$${fmt(state.currency)}`;
   // compute income per second from owned items and multiplier
   const incomePerSec = state.vault.reduce((s,c)=>s+c.income,0) * state.multiplier;
-  if (incomeBtn) incomeBtn.textContent = `Income: $${fmt(incomePerSec)} Cash/Sec`;
+  if (incomeBtn) incomeBtn.textContent = `Income: $${fmt(incomePerSec)} per Sec`;
   renderSpawner();
   renderOwned();
 }
@@ -321,13 +321,13 @@ function renderCollection(){
     else if(c.rarity==('Mythic')) color = '#ef4444';
     else if(c.rarity==('Brainrot God')) color = '#fbbf24';
     else if (c.rarity==('Secret')) color = '#050505ff';
-    else if (c.rarity==('OG')) color = '#dc2626';
+    else if (c.rarity==('OG')) color = '#0ef306ff';
     barCell.style.background = color;
     el.appendChild(barCell);
 
     const nameCell = document.createElement('div'); nameCell.className='name'; nameCell.textContent = discovered ? c.name : '???'; el.appendChild(nameCell);
     const rarityCell = document.createElement('div'); rarityCell.className='muted'; rarityCell.textContent = c.rarity; el.appendChild(rarityCell);
-  const incomeCell = document.createElement('div'); incomeCell.className='muted'; incomeCell.textContent = discovered ? `${c.income} Cash/Sec` : ''; el.appendChild(incomeCell);
+  const incomeCell = document.createElement('div'); incomeCell.className='muted'; incomeCell.textContent = discovered ? `${c.income} per Sec` : ''; el.appendChild(incomeCell);
     const countCell = document.createElement('div'); countCell.className='count muted'; countCell.style.textAlign='right'; countCell.textContent = String(count); el.appendChild(countCell);
   });
 }
