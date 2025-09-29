@@ -135,7 +135,7 @@ const CREATURES = [
   {name:'Tifforny Pooterus',rarity:'OG',weight:0.00001,price:50000000000,income:2500000},
 ];
 
-let state = {currency:25,vault:[],conveyor:[],multiplier:1,discovered:[],ownedCounts:{},usedCodes:[]};
+let state = {currency:25,vault:[],conveyor:[],multiplier:1,discovered:[],ownedCounts:{},usedCodes:[],maxBrainrots:5,incomeMultiplier:1,luck:0};
 
 // Rarity ranking helper (higher = rarer)
 const RARITY_RANK = {og:9, secret:8, 'Brainrot God':7, mythic:6, legendary:5, epic:4, rare:3, uncommon:2, common:1};
@@ -151,6 +151,10 @@ function loadState(){
   if(!state.discovered) state.discovered = [];
   // backfill usedCodes if missing (older saves)
   if(!state.usedCodes) state.usedCodes = [];
+  
+  if(!state.maxBrainrots) state.maxBrainrots = 5;
+  if(!state.incomeMultiplier) state.incomeMultiplier = 1;
+  if(!state.luck) state.luck = 0;
   // ensure ownedCounts exists and backfill from current vault if missing
   if(!state.ownedCounts) {
     state.ownedCounts = {};
@@ -177,12 +181,16 @@ function renderSpawner(){
   spawnListEl.innerHTML='';
   state.conveyor.slice().forEach((c,i)=>{
   const canAfford = state.currency >= c.price;
-  const div=document.createElement('div');div.className='item rarity-'+c.rarity;
+  const div=document.createElement('div');div.className='item rarity-'+c.rarity.replace(/ /g, '-');
   const buttonClass = canAfford ? '' : ' disabled';
   div.innerHTML=`<div><div class='creature-name'>${c.name}</div><div class='rarity-text muted'>${c.rarity} - Monini: ${c.income} per Sec</div></div><div style='text-align:center;display:flex;align-items:center;justify-content:center'><button class='${buttonClass}'>Buy for $${fmt(c.price)}</button></div>`;
     spawnListEl.appendChild(div);
     div.querySelector('button').onclick=()=>{
       if(state.currency<c.price) return;
+      if(state.vault.length >= state.maxBrainrots) {
+        alert(`You can only own ${state.maxBrainrots} Brainrots! Upgrade your Max Brainrots to own more.`);
+        return;
+      }
       state.currency-=c.price;
       state.vault.push(c);
       // mark as discovered persistently
@@ -199,6 +207,13 @@ function renderSpawner(){
 
 function renderOwned(){
   ownedEl.innerHTML='';
+  
+  // Update the owned header with capacity counter
+  const ownedHeader = document.querySelector('.card:last-child .muted[style*="font-weight:600"]');
+  if(ownedHeader) {
+    ownedHeader.innerHTML = `Brainrots Owned <span style="color:#10b981; font-weight:normal; font-size:14px;">${state.vault.length}/${state.maxBrainrots}</span>`;
+  }
+  
   // Sort by rarity (rarer first) then by income desc
   const sorted = [...state.vault].sort((a,b)=>{
     const r = rarityRank(b.rarity) - rarityRank(a.rarity);
@@ -207,7 +222,7 @@ function renderOwned(){
   });
   sorted.forEach((c)=>{
     const sell=Math.floor(c.price*0.4);
-  const div=document.createElement('div');div.className='item rarity-'+c.rarity;
+  const div=document.createElement('div');div.className='item rarity-'+c.rarity.replace(/ /g, '-');
   div.innerHTML=`<div><div class='creature-name'>${c.name}</div><div class='rarity-text muted'>${c.rarity} • income ${c.income} per Sec</div></div><div style='text-align:center;display:flex;align-items:center;justify-content:center'><button>Sell for $${fmt(sell)}</button></div>`;
     ownedEl.appendChild(div);
     div.querySelector('button').onclick=()=>{
@@ -223,11 +238,12 @@ function renderOwned(){
 
 function renderAll(){
   currencyEl.textContent=`$${fmt(state.currency)}`;
-  // compute income per second from owned items and multiplier
-  const incomePerSec = state.vault.reduce((s,c)=>s+c.income,0) * state.multiplier;
+  // compute income per second from owned items, multiplier, and income multiplier
+  const incomePerSec = state.vault.reduce((s,c)=>s+c.income,0) * state.multiplier * state.incomeMultiplier;
   if (incomeBtn) incomeBtn.textContent = `Income: $${fmt(incomePerSec)} per Sec`;
   renderSpawner();
   renderOwned();
+  renderUpgrades();
 }
 
 function spawnRandom(){state.conveyor=[];for(let i=0;i<10;i++){state.conveyor.push(pickWeighted(CREATURES));}renderAll();}
@@ -235,30 +251,60 @@ function spawnRandom(){state.conveyor=[];for(let i=0;i<10;i++){state.conveyor.pu
 // Auto-refresh creatures every 15 seconds and update countdown display
 const REFRESH_INTERVAL = 15; // seconds
 let refreshRemaining = REFRESH_INTERVAL;
-const countdownEl = document.getElementById('countdown');
+let countdownInterval = null;
+
 function tickCountdown(){
   refreshRemaining -= 1;
-  if(countdownEl) countdownEl.textContent = String(Math.max(0, refreshRemaining));
   if(refreshRemaining <= 0){
     spawnRandom();
     refreshRemaining = REFRESH_INTERVAL;
   }
+  const countdownEl = document.getElementById('countdown');
+  if(countdownEl) countdownEl.textContent = String(refreshRemaining);
 }
+
+// Ensure we only have one countdown interval running
+function startCountdown() {
+  if(countdownInterval) clearInterval(countdownInterval);
+  countdownInterval = setInterval(tickCountdown, 1000);
+}
+
 // start ticking every second
-setInterval(tickCountdown, 1000);
+startCountdown();
 
 // Passive income interval
-setInterval(()=>{state.currency+=state.vault.reduce((s,c)=>s+c.income,0)*state.multiplier/2;renderAll();saveState();},500);
+setInterval(()=>{state.currency+=state.vault.reduce((s,c)=>s+c.income,0)*state.multiplier*state.incomeMultiplier/2;renderAll();saveState();},500);
 
 loadState();
 spawnRandom();
 renderAll();
+
+// Initialize countdown display
+const countdownEl = document.getElementById('countdown');
+if(countdownEl) countdownEl.textContent = String(refreshRemaining);
+
+// Setup upgrade button event listeners
+const maxBrainrotsBtn = document.querySelector('.upgrade-item:first-child button');
+if(maxBrainrotsBtn) {
+  maxBrainrotsBtn.onclick = upgradeMaxBrainrots;
+}
+
+const luckBtn = document.querySelector('.upgrade-item:nth-child(2) button');
+if(luckBtn) {
+  luckBtn.onclick = upgradeLuck;
+}
+
+const incomeMultiplierBtn = document.querySelector('.upgrade-item:last-child button');
+if(incomeMultiplierBtn) {
+  incomeMultiplierBtn.onclick = upgradeIncomeMultiplier;
+}
 
 // Modal markup insertion (created here so elements exist)
 const modalHtml = `
 <div id="aboutModal" class="modal-overlay hidden">
   <div class="modal-box" style="max-height:80vh;overflow-y:auto">
     <div style="font-weight:700;margin-bottom:8px">About Brainrotini Gamini</div>
+    <div style="font-weight:700;margin-bottom:8px">(email dcrider2003@gmail.com with title "BRGame Bug" for support)</div>
     <div style="color:var(--muted);margin-bottom:16px">
       <p>Welcome to Brainrotini Gamini! Collect brainrots and make the most money!</p>
       <p>Each brainrot generates Monini over time. Discover rare creatures and build your collection!</p>
@@ -270,6 +316,12 @@ const modalHtml = `
       </ul>
       <p>Version History:</p>
         <ul style="margin-left:20px">
+        <li>Version: 0.2 (The Upgrade-date)</li>
+        <ul style="margin-left:20px">
+          <li>Implemented upgrade system that will allow you to upgrade your capacity, luck, and income!</li>
+          <li>Major UI changes</li>
+          <li>Corrected the "Brainrot God" rarity not displaying color</li>
+        </ul>
         <li>Version: 0.1.5</li>
         <ul style="margin-left:20px">
           <li>Codes can now only be redeemed once</li>
@@ -469,10 +521,11 @@ document.addEventListener('click', (e) => {
   if (target.closest && target.closest('#confirmReset')) {
     // clear save and reset in-memory state
     localStorage.removeItem('collector');
-    state = {currency:25,vault:[],conveyor:[],multiplier:1,discovered:[],ownedCounts:{},usedCodes:[]};
+    state = {currency:25,vault:[],conveyor:[],multiplier:1,discovered:[],ownedCounts:{},usedCodes:[],maxBrainrots:5,incomeMultiplier:1,luck:0};
     saveState();
     spawnRandom();
     refreshRemaining = REFRESH_INTERVAL; // Reset the refresh timer
+    startCountdown(); // Restart the countdown interval
     renderAll();
     const m = document.getElementById('resetModal'); if (m) m.classList.add('hidden');
     return;
@@ -541,6 +594,94 @@ function sellByRarity(rarity){
   saveState();
 }
 
+// Upgrade system
+function getMaxBrainrotsPrice() {
+  // Start at $1000, increase exponentially: 1000 * 1.5^level
+  const level = state.maxBrainrots - 5; // Start from level 0 when maxBrainrots = 5
+  return Math.floor(1000 * Math.pow(1.5, level));
+}
+
+function upgradeMaxBrainrots() {
+  const price = getMaxBrainrotsPrice();
+  if(state.currency >= price) {
+    state.currency -= price;
+    state.maxBrainrots += 1; // Increase by 1 each upgrade
+    renderUpgrades();
+    renderAll();
+    saveState();
+  }
+}
+
+function getLuckPrice() {
+  // Start at $1,000,000, increase by 5x each level
+  return Math.floor(1000000 * Math.pow(5, state.luck));
+}
+
+function upgradeLuck() {
+  const price = getLuckPrice();
+  if(state.currency >= price) {
+    state.currency -= price;
+    state.luck += 1;
+    renderUpgrades();
+    renderAll();
+    saveState();
+  }
+}
+
+function getIncomeMultiplierPrice() {
+  // Start at $10000, increase by 2.5x each level
+  const level = Math.round((state.incomeMultiplier - 1) / 0.1); // Each 0.1 increase is one level
+  return Math.floor(10000 * Math.pow(2.5, level));
+}
+
+function upgradeIncomeMultiplier() {
+  const price = getIncomeMultiplierPrice();
+  if(state.currency >= price) {
+    state.currency -= price;
+    state.incomeMultiplier += 0.1; // Increase by 10%
+    state.incomeMultiplier = Math.round(state.incomeMultiplier * 10) / 10; // Fix floating point precision
+    renderUpgrades();
+    renderAll();
+    saveState();
+  }
+}
+
+function renderUpgrades() {
+  const maxBrainrotsBtn = document.querySelector('.upgrade-item:first-child button');
+  const luckBtn = document.querySelector('.upgrade-item:nth-child(2) button');
+  const incomeMultiplierBtn = document.querySelector('.upgrade-item:last-child button');
+  
+  if (!maxBrainrotsBtn) return; // Exit if elements don't exist
+  
+  // Max Brainrots upgrade
+  const maxBrainrotsPrice = getMaxBrainrotsPrice();
+  const canAffordMax = state.currency >= maxBrainrotsPrice;
+  
+  maxBrainrotsBtn.textContent = `$${fmt(maxBrainrotsPrice)}`;
+  maxBrainrotsBtn.style.opacity = canAffordMax ? '1' : '0.5';
+  maxBrainrotsBtn.style.cursor = canAffordMax ? 'pointer' : 'not-allowed';
+  
+  // Luck upgrade
+  if (luckBtn) {
+    const luckPrice = getLuckPrice();
+    const canAffordLuck = state.currency >= luckPrice;
+    
+    luckBtn.textContent = `$${fmt(luckPrice)}`;
+    luckBtn.style.opacity = canAffordLuck ? '1' : '0.5';
+    luckBtn.style.cursor = canAffordLuck ? 'pointer' : 'not-allowed';
+  }
+  
+  // Income Multiplier upgrade
+  if (incomeMultiplierBtn) {
+    const incomePrice = getIncomeMultiplierPrice();
+    const canAffordIncome = state.currency >= incomePrice;
+    
+    incomeMultiplierBtn.textContent = `$${fmt(incomePrice)}`;
+    incomeMultiplierBtn.style.opacity = canAffordIncome ? '1' : '0.5';
+    incomeMultiplierBtn.style.cursor = canAffordIncome ? 'pointer' : 'not-allowed';
+  }
+}
+
 // Code redemption system
 function redeemCode() {
   const codeInput = document.getElementById('codeInput');
@@ -573,7 +714,8 @@ function redeemCode() {
     'ROBISACHEATER': { type: 'creature', creature: 'Roborni Cheatorni', description: 'OG Brainrot!' },
     'JORDONIA': { type: 'creature', creature: 'Jordonia Verizonia', description: 'OG Brainrot!' },
     'SNACKS': { type: 'creature', creature: 'Nikkito Parverino', description: 'OG Brainrot!' },
-    'HOWHEKEEPGETTINGSTANK': { type: 'creature', creature: 'Tifforny Pooterus', description: 'OG Brainrot!' }
+    'HOWHEKEEPGETTINGSTANK': { type: 'creature', creature: 'Tifforny Pooterus', description: 'OG Brainrot!' },
+    'GODTESTER': { type: 'creature', creature: 'Odin Din Din Dun', description: 'Ultimate Brainrot!' }
     // Add more codes as needed
   };
   

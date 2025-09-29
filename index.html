@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>collector</title>
+  <title>Brainrotini Gamini</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,7 +11,7 @@
     <header>
       <h1 style='font-family: arial; font-size: 40px'> Brainrotini Gamini</h1>
       <div class="stat card">
-        <div id="versionText" class="small" style="cursor:pointer">Version 0.1.5</div>
+        <div id="versionText" class="small" style="cursor:pointer">Version 0.2</div>
         <div id="incomeBtn" class="small" role="status">Income: $0/s</div>
         <div class="currency-stack">
           <div class="big" id="currency">$0</div>
@@ -29,6 +29,45 @@
           <div id="refreshText" class="muted" style="color:#e6eef8; font-weight:600">New Rots in: <span id="countdown">15</span>s</div>
         </div>
         <div class="list" id="spawnList"></div>
+      </div>
+
+      <div class="card small-card">
+        <div class="row" style="justify-content:center;align-items:center">
+          <div>
+            <div class="muted" style="color:#e6eef8; font-weight:600; text-align:center">Upgrades</div>
+          </div>
+        </div>
+        <div style="padding:16px; display:flex; flex-direction:column; gap:12px;">
+          <div class="upgrade-item">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <div style="font-weight:600; color:#e6eef8;">Max Brainrots +1</div>
+                <div style="font-size:12px; color:var(--muted);">Increase how many you can own!</div>
+              </div>
+              <button class="small" style="background:var(--accent); color:white; border:none; cursor:pointer;">$1,000</button>
+            </div>
+          </div>
+          
+          <div class="upgrade-item">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <div style="font-weight:600; color:#e6eef8;">Luck</div>
+                <div style="font-size:12px; color:var(--muted);">Better rarity chances</div>
+              </div>
+              <button class="small" style="background:var(--accent); color:white; border:none; cursor:pointer;">$5,000</button>
+            </div>
+          </div>
+          
+          <div class="upgrade-item">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <div style="font-weight:600; color:#e6eef8;">Income Multiplier</div>
+                <div style="font-size:12px; color:var(--muted);">Boost all income</div>
+              </div>
+              <button class="small" style="background:var(--accent); color:white; border:none; cursor:pointer;">$10,000</button>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="card">
@@ -55,10 +94,10 @@
         <div id="owned" style="height:570px;overflow:auto;margin-top:8px;background:#071122;padding:8px;border-radius:8px"></div>
       </div>
     </div>
-    <div style="max-width:900px;margin:12px auto;text-align:right; margin-top:-5px; width: 100%">
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <div style="text-align:left"><button id="collectionBtn" class="small">Collection</button></div>
-        <div style="text-align:right"><button id="aboutBtn" class="small">About</button></div>
+    <div style="position:absolute;left:50%;transform:translateX(-50%);bottom:170px;width:auto;">
+      <div style="display:flex;justify-content:center;align-items:center;gap:200px;">
+        <button id="collectionBtn" class="small">Collection</button>
+        <button id="aboutBtn" class="small">About</button>
       </div>
     </div>
   </div>
