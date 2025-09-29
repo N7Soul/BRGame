@@ -49,7 +49,7 @@ button.disabled{background:#4c1d95;cursor:not-allowed;opacity:0.6}
 .rarity-Mythic{background:linear-gradient(180deg,rgba(239,68,68,0.10),rgba(17,24,39,0.02));border-left:4px solid #ef4444}
 .rarity-Brainrot\ God{background:linear-gradient(180deg,rgba(251,191,36,0.10),rgba(17,24,39,0.02));border-left:4px solid #fbbf24}
 .rarity-Secret{background:linear-gradient(180deg,rgba(5,5,5,0.10),rgba(17,24,39,0.02));border-left:4px solid #050505ff}
-.rarity-OG{background:linear-gradient(180deg,rgba(220,38,38,0.10),rgba(17,24,39,0.02));border-left:4px solid #0ef306ff}
+.rarity-OG{background:linear-gradient(180deg,rgba(14,243,6,0.10),rgba(17,24,39,0.02));border-left:4px solid #0ef306ff}
 /* Reset button (danger) */
 .btn-danger{background:#b91c1c;border:0;padding:8px 12px;border-radius:8px;color:white;cursor:pointer}
 .btn-danger:hover{background:#991b1b}

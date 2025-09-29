@@ -86,53 +86,53 @@ const CREATURES = [
   {name:'Los Tipi Tacos',rarity:'Brainrot God',weight:0.005,price:46000000,income:260000},
   {name:'Bombardini Tortinii',rarity:'Brainrot God',weight:0.004,price:50000000,income:225000},
   // Secret
-  {name:'Las Sis',rarity:'Secret',weight:0.003,price:25000000,income:17500000},
-  {name:'La Vacca Staturno Saturnita',rarity:'Secret',weight:0.0029,price:50000000,income:250000},
-  {name:'Blackhole Goat',rarity:'Secret',weight:0.0028,price:75000000,income:400000},
-  {name:'Agarrini la Palini',rarity:'Secret',weight:0.0027,price:80000000,income:425000},
-  {name:'Los Matteos',rarity:'Secret',weight:0.0026,price:100000000,income:300000},
-  {name:'Chimpanzini Spiderini',rarity:'Secret',weight:0.0025,price:100000000,income:325000},
-  {name:'Sammyini Spyderini',rarity:'Secret',weight:0.0024,price:100000000,income:325000},
-  {name:'Extinct Tralalero',rarity:'Secret',weight:0.0023,price:125000000,income:450000},
-  {name:'Extinct Matteo',rarity:'Secret',weight:0.0022,price:140000000,income:625000},
-  {name:'Dul Dul Dul',rarity:'Secret',weight:0.0021,price:150000000,income:375000},
-  {name:'Los Tralaleritos',rarity:'Secret',weight:0.002,price:150000000,income:500000},
-  {name:'Las Tralaleritas',rarity:'Secret',weight:0.0019,price:150000000,income:650000},
-  {name:'Las Vaquitas Saturnitas',rarity:'Secret',weight:0.0018,price:160000000,income:750000},
-  {name:'La Karkerkar Combinasion',rarity:'Secret',weight:0.0017,price:175000000,income:700000},
-  {name:'Job Job Job Sahur',rarity:'Secret',weight:0.0016,price:175000000,income:700000},
-  {name:'Los Spyderrinis',rarity:'Secret',weight:0.0015,price:250000000,income:450000},
-  {name:'Graipuss Medussi',rarity:'Secret',weight:0.0014,price:250000000,income:1000000},
-  {name:'Los Hotspotsitos',rarity:'Secret',weight:0.0013,price:300000000,income:20000000},
-  {name:'Nooo My Hotspot',rarity:'Secret',weight:0.0012,price:500000000,income:1500000},
-  {name:'La Sahur Combinasion',rarity:'Secret',weight:0.0011,price:550000000,income:2000000},
-  {name:'Quesadilla Crocodila',rarity:'Secret',weight:0.001,price:700000000,income:3000000},
-  {name:'Chicleteira Bicicleteira',rarity:'Secret',weight:0.0009,price:750000000,income:3500000},
-  {name:'Spaghetti Tualetti',rarity:'Secret',weight:0.0008,price:750000000,income:60000000},
-  {name:'La Grande Combinasion',rarity:'Secret',weight:0.0007,price:1000000000,income:10000000},
-  {name:'Los Noo My Hotspotsitos',rarity:'Secret',weight:0.0006,price:1000000000,income:5000000},
-  {name:'67',rarity:'Secret',weight:0.0005,price:1200000000,income:7500000},
-  {name:'Los Combinasionas',rarity:'Secret',weight:0.0004,price:2000000000,income:63700000},
-  {name:'Karkerkar Kurkur',rarity:'Secret',weight:0.0003,price:100000000,income:2400000},
-  {name:'Nuclearo Dinossauro',rarity:'Secret',weight:0.0002,price:2500000000,income:15000000},
-  {name:'Celularcini Viciosini',rarity:'Secret',weight:0.00019,price:2700000000,income:22500000},
-  {name:'Tralaledon',rarity:'Secret',weight:0.00018,price:3000000000,income:27500000},
-  {name:'La Extinct Grande',rarity:'Secret',weight:0.00017,price:3200000000,income:23500000},
-  {name:'Ketupat Kepat',rarity:'Secret',weight:0.00016,price:5000000000,income:35000000},
-  {name:'La Supreme Combinasion',rarity:'Secret',weight:0.00015,price:7000000000,income:40000000},
-  {name:'Ketchuru and Musturu',rarity:'Secret',weight:0.00014,price:7500000000,income:42500000},
-  {name:'Garama and Madundung',rarity:'Secret',weight:0.00013,price:10000000000,income:50000000},
-  {name:'Dragon Cannelloni',rarity:'Secret',weight:0.00012,price:100000000000,income:100000000},
+  {name:'Las Sis',rarity:'Secret',weight:0.003,price:25000000,income:17500},
+  {name:'La Vacca Staturno Saturnita',rarity:'Secret',weight:0.0029,price:30000000,income:25000},
+  {name:'Blackhole Goat',rarity:'Secret',weight:0.0028,price:45000000,income:40000},
+  {name:'Agarrini la Palini',rarity:'Secret',weight:0.0027,price:60000000,income:42500},
+  {name:'Los Matteos',rarity:'Secret',weight:0.0026,price:75000000,income:30000},
+  {name:'Chimpanzini Spiderini',rarity:'Secret',weight:0.0025,price:100000000,income:32500},
+  {name:'Sammyini Spyderini',rarity:'Secret',weight:0.0024,price:125000000,income:32500},
+  {name:'Extinct Tralalero',rarity:'Secret',weight:0.0023,price:150000000,income:45000},
+  {name:'Extinct Matteo',rarity:'Secret',weight:0.0022,price:175000000,income:62500},
+  {name:'Dul Dul Dul',rarity:'Secret',weight:0.0021,price:200000000,income:37500},
+  {name:'Los Tralaleritos',rarity:'Secret',weight:0.002,price:225000000,income:50000},
+  {name:'Las Tralaleritas',rarity:'Secret',weight:0.0019,price:250000000,income:65000},
+  {name:'Las Vaquitas Saturnitas',rarity:'Secret',weight:0.0018,price:275000000,income:75000},
+  {name:'La Karkerkar Combinasion',rarity:'Secret',weight:0.0017,price:300000000,income:70000},
+  {name:'Job Job Job Sahur',rarity:'Secret',weight:0.0016,price:325000000,income:70000},
+  {name:'Los Spyderrinis',rarity:'Secret',weight:0.0015,price:350000000,income:45000},
+  {name:'Graipuss Medussi',rarity:'Secret',weight:0.0014,price:375000000,income:100000},
+  {name:'Los Hotspotsitos',rarity:'Secret',weight:0.0013,price:400000000,income:2000000},
+  {name:'Nooo My Hotspot',rarity:'Secret',weight:0.0012,price:425000000,income:150000},
+  {name:'La Sahur Combinasion',rarity:'Secret',weight:0.0011,price:450000000,income:200000},
+  {name:'Quesadilla Crocodila',rarity:'Secret',weight:0.001,price:475000000,income:300000},
+  {name:'Chicleteira Bicicleteira',rarity:'Secret',weight:0.0009,price:500000000,income:350000},
+  {name:'Spaghetti Tualetti',rarity:'Secret',weight:0.0008,price:525000000,income:6000000},
+  {name:'La Grande Combinasion',rarity:'Secret',weight:0.0007,price:550000000,income:1000000},
+  {name:'Los Noo My Hotspotsitos',rarity:'Secret',weight:0.0006,price:575000000,income:500000},
+  {name:'67',rarity:'Secret',weight:0.0005,price:600000000,income:750000},
+  {name:'Los Combinasionas',rarity:'Secret',weight:0.0004,price:625000000,income:6370000},
+  {name:'Karkerkar Kurkur',rarity:'Secret',weight:0.0003,price:650000000,income:240000},
+  {name:'Nuclearo Dinossauro',rarity:'Secret',weight:0.0002,price:675000000,income:1500000},
+  {name:'Celularcini Viciosini',rarity:'Secret',weight:0.00019,price:700000000,income:2250000},
+  {name:'Tralaledon',rarity:'Secret',weight:0.00018,price:725000000,income:2750000},
+  {name:'La Extinct Grande',rarity:'Secret',weight:0.00017,price:750000000,income:2350000},
+  {name:'Ketupat Kepat',rarity:'Secret',weight:0.00016,price:775000000,income:3500000},
+  {name:'La Supreme Combinasion',rarity:'Secret',weight:0.00015,price:800000000,income:4000000},
+  {name:'Ketchuru and Musturu',rarity:'Secret',weight:0.00014,price:825000000,income:4250000},
+  {name:'Garama and Madundung',rarity:'Secret',weight:0.00013,price:850000000,income:5000000},
+  {name:'Dragon Cannelloni',rarity:'Secret',weight:0.00012,price:1000000000,income:10000000},
   // OG
-  {name:'Derktism Trainino',rarity:'OG',weight:0.00001,price:500000000000,income:250000000},
-  {name:'Davidinni Prereleasito',rarity:'OG',weight:0.00001,price:500000000000,income:250000000},
-  {name:'Tynino Swolgrande',rarity:'OG',weight:0.00001,price:500000000000,income:250000000},
-  {name:'Dandutto Sleepini',rarity:'OG',weight:0.00001,price:500000000000,income:250000000},
-  {name:'Bree No Bicus Dicus',rarity:'OG',weight:0.00001,price:500000000000,income:250000000},
-  {name:'Roborni Cheatorni',rarity:'OG',weight:0.00001,price:500000000000,income:250000000},
-  {name:'Jordonia Verizonia',rarity:'OG',weight:0.00001,price:500000000000,income:250000000},
-  {name:'Nikkito Parverino',rarity:'OG',weight:0.00001,price:500000000000,income:250000000},
-  {name:'Tifforny Pooterus',rarity:'OG',weight:0.00001,price:500000000000,income:250000000},
+  {name:'Derktism Trainino',rarity:'OG',weight:0.00001,price:50000000000,income:25000000},
+  {name:'Davidinni Prereleasito',rarity:'OG',weight:0.00001,price:50000000000,income:2500000},
+  {name:'Tynino Swolgrande',rarity:'OG',weight:0.00001,price:50000000000,income:2500000},
+  {name:'Dandutto Sleepini',rarity:'OG',weight:0.00001,price:50000000000,income:2500000},
+  {name:'Bree No Bicus Dicus',rarity:'OG',weight:0.00001,price:50000000000,income:2500000},
+  {name:'Roborni Cheatorni',rarity:'OG',weight:0.00001,price:50000000000,income:2500000},
+  {name:'Jordonia Verizonia',rarity:'OG',weight:0.00001,price:50000000000,income:2500000},
+  {name:'Nikkito Parverino',rarity:'OG',weight:0.00001,price:50000000000,income:2500000},
+  {name:'Tifforny Pooterus',rarity:'OG',weight:0.00001,price:50000000000,income:2500000},
 ];
 
 let state = {currency:25,vault:[],conveyor:[],multiplier:1,discovered:[],ownedCounts:{}};
@@ -268,6 +268,11 @@ const modalHtml = `
       </ul>
       <p>Version History:</p>
         <ul style="margin-left:20px">
+        <li>Version: 0.1.4</li>
+        <ul style="margin-left:20px">
+          <li>Added rewards codes (You'll have to find where they go!)</li>
+          <li>Large overhaul on secret and OG prices and income</li>
+        </ul>
         <li>Version: 0.1.3</li>
         <ul style="margin-left:20px">
           <li>Added "About" button</li>
@@ -300,6 +305,18 @@ const modalHtml = `
     <div class="modal-actions">
       <button id="closeAbout" class="small">Close</button>
       <button id="resetBtn" class="btn-danger">Reset Save</button>
+    </div>
+  </div>
+</div>
+<div id="codeModal" class="modal-overlay hidden">
+  <div class="modal-box">
+    <div style="font-weight:700;margin-bottom:8px">Redeem Code</div>
+    <div style="color:var(--muted);margin-bottom:16px">Enter a code to receive rewards:</div>
+    <input type="text" id="codeInput" placeholder="Enter code here..." style="width:100%;box-sizing:border-box;padding:8px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);background:var(--card);color:#e6eef8;margin-bottom:16px;font-family:inherit">
+    <div id="codeMessage" style="margin-bottom:16px;font-size:14px"></div>
+    <div class="modal-actions">
+      <button id="closeCode" class="small">Close</button>
+      <button id="redeemCode" style="background:var(--accent);border:0;padding:8px 12px;border-radius:8px;color:white;cursor:pointer">Redeem</button>
     </div>
   </div>
 </div>
@@ -391,6 +408,12 @@ renderOwned = function(){
 // Use event delegation so handlers still work if elements change dynamically
 document.addEventListener('click', (e) => {
   const target = e.target;
+  // Open code modal when version text is clicked
+  if (target.closest && target.closest('#versionText')) {
+    const m = document.getElementById('codeModal'); if (m) m.classList.remove('hidden');
+    document.getElementById('codeInput').focus();
+    return;
+  }
   // Open about modal
   if (target.closest && target.closest('#aboutBtn')) {
     const m = document.getElementById('aboutModal'); if (m) m.classList.remove('hidden');
@@ -422,6 +445,18 @@ document.addEventListener('click', (e) => {
     const m = document.getElementById('collectionModal'); if (m) m.classList.add('hidden');
     return;
   }
+  // Close code modal
+  if (target.closest && target.closest('#closeCode')) {
+    const m = document.getElementById('codeModal'); if (m) m.classList.add('hidden');
+    document.getElementById('codeInput').value = '';
+    document.getElementById('codeMessage').textContent = '';
+    return;
+  }
+  // Redeem code
+  if (target.closest && target.closest('#redeemCode')) {
+    redeemCode();
+    return;
+  }
   // Confirm reset
   if (target.closest && target.closest('#confirmReset')) {
     // clear save and reset in-memory state
@@ -438,6 +473,12 @@ document.addEventListener('click', (e) => {
   if (target.id === 'aboutModal') { target.classList.add('hidden'); return; }
   if (target.id === 'resetModal') { target.classList.add('hidden'); return; }
   if (target.id === 'collectionModal') { target.classList.add('hidden'); return; }
+  if (target.id === 'codeModal') { 
+    target.classList.add('hidden'); 
+    document.getElementById('codeInput').value = '';
+    document.getElementById('codeMessage').textContent = '';
+    return; 
+  }
 });
 
 // SELL DROPDOWN: toggle and actions
@@ -490,4 +531,61 @@ function sellByRarity(rarity){
   state.currency += total;
   renderAll();
   saveState();
+}
+
+// Code redemption system
+function redeemCode() {
+  const codeInput = document.getElementById('codeInput');
+  const messageEl = document.getElementById('codeMessage');
+  const code = codeInput.value.trim().toUpperCase();
+  
+  if (!code) {
+    messageEl.textContent = 'Please enter a code.';
+    messageEl.style.color = '#ef4444';
+    return;
+  }
+  
+  // Define available codes
+  const codes = {
+    'WELCOME': { type: 'money', amount: 10000, description: 'Welcome bonus' },
+    'HUNNIT': { type: 'money', amount: 100000, description: 'Hunnit Bands!' },
+    'LILWAYNE': { type: 'money', amount: 1000000, description: 'A MILLI!' },
+    'ZUCCHINIONTHEHEAD': { type: 'creature', creature: 'Derktism Trainino', description: 'OG Brainrot!' },
+    'DICKDEEPINTRAINS': { type: 'creature', creature: 'Davidinni Prereleasito', description: 'OG Brainrot!' },
+    'HOWMUCHBREADDOYOUNEED': { type: 'creature', creature: 'Tynino Swolgrande', description: 'OG Brainrot!' },
+    'GOLDENRETRIEVERASS': { type: 'creature', creature: 'Dandutto Sleepini', description: 'OG Brainrot!' },
+    'SOUTHERNTWANG': { type: 'creature', creature: 'Bree No Bicus Dicus', description: 'OG Brainrot!' },
+    'ROBISACHEATER': { type: 'creature', creature: 'Roborni Cheatorni', description: 'OG Brainrot!' },
+    'JORDONIA': { type: 'creature', creature: 'Jordonia Verizonia', description: 'OG Brainrot!' },
+    'SNACKS': { type: 'creature', creature: 'Nikkito Parverino', description: 'OG Brainrot!' },
+    'HOWHEKEEPGETTINGSTANK': { type: 'creature', creature: 'Tifforny Pooterus', description: 'OG Brainrot!' }
+    // Add more codes as needed
+  };
+  
+  if (codes[code]) {
+    const reward = codes[code];
+    
+    if (reward.type === 'money') {
+      state.currency += reward.amount;
+      messageEl.textContent = `Valid! You received $${fmt(reward.amount)} - ${reward.description}`;
+      messageEl.style.color = '#10b981';
+    } else if (reward.type === 'creature') {
+      const creature = CREATURES.find(c => c.name === reward.creature);
+      if (creature) {
+        state.vault.push({...creature});
+        if (!state.discovered.includes(creature.name)) state.discovered.push(creature.name);
+        state.ownedCounts[creature.name] = (state.ownedCounts[creature.name] || 0) + 1;
+        messageEl.textContent = `Valid! You received ${creature.name} - ${reward.description}`;
+        messageEl.style.color = '#10b981';
+      }
+    }
+    
+    // Clear the code after successful redemption
+    codeInput.value = '';
+    saveState();
+    renderAll();
+  } else {
+    messageEl.textContent = 'Invalid code. Please try again.';
+    messageEl.style.color = '#ef4444';
+  }
 }
