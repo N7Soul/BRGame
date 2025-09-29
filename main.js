@@ -316,6 +316,10 @@ const modalHtml = `
       </ul>
       <p>Version History:</p>
         <ul style="margin-left:20px">
+        <li>Version: 0.2.1</li>
+        <ul style="margin-left:20px">
+          <li>Updated UI for better user experience on different resolutions</li>
+          </ul>
         <li>Version: 0.2 (The Upgrade-date)</li>
         <ul style="margin-left:20px">
           <li>Implemented upgrade system that will allow you to upgrade your capacity, luck, and income!</li>
