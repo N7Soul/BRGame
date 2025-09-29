@@ -254,6 +254,55 @@ renderAll();
 
 // Modal markup insertion (created here so elements exist)
 const modalHtml = `
+<div id="aboutModal" class="modal-overlay hidden">
+  <div class="modal-box">
+    <div style="font-weight:700;margin-bottom:8px">About Brainrotini Gamini</div>
+    <div style="color:var(--muted);margin-bottom:16px">
+      <p>Welcome to Brainrotini Gamini! Collect brainrots and make the most money!</p>
+      <p>Each brainrot generates Monini over time. Discover rare creatures and build your collection!</p>
+      <p>Features:</p>
+      <ul style="margin-left:20px">
+        <li>100+ unique Brainrot characters</li>
+        <li>9 rarity tiers from Common to OG</li>
+        <li>Become the greatest Brainrot collector on the planet!</li>
+      </ul>
+      <p>Version History:</p>
+        <ul style="margin-left:20px">
+        <li>Version: 0.1.3</li>
+        <ul style="margin-left:20px">
+          <li>Added "About" button</li>
+          <li>Moved "Reset Save" button into an about section</li>
+          <li>Added credits</li>
+        </ul>
+        <li>Version: 0.1.2</li>
+        <ul style="margin-left:20px">
+          <li>"Cash" has been changed to "Monini" to reflect the brainrots on rotation
+          <li>currency changed from "Cash/Sec" to "per Sec"</li>
+          <li>Changed color of "OG" rarity to bright green</li>
+          <li>Added a version number to keep track of what version we're on</li>
+        </ul>
+        <li>Version: 0.1.1</li>
+        <ul style="margin-left:20px">
+          <li>Buy button is now unclickable if player doesn't have the money</li>
+          <li>New OG brainrots as easter eggs for my friends</li>
+          <li>Small stylistic changes</li>
+        </ul>
+        <li>Initial Release: 0.1.0</li>
+      </ul>
+      <p>Credits:</p>
+      <ul style="margin-left:20px">
+        <li>Developer: N7Soul, ChatGPT, Claude Sonnet 4</li>
+        <li>Design: N7Soul, ChatGPT, Claude Sonnet 4</li>
+        <li>Special Thanks: CoderSyntax - critiquing my code and making it better everyday!</li>
+        <li>Special Thanks: Friends doing beta testing and providing feedback for me <3</li>
+      </ul>
+    </div>
+    <div class="modal-actions">
+      <button id="closeAbout" class="small">Close</button>
+      <button id="resetBtn" class="btn-danger">Reset Save</button>
+    </div>
+  </div>
+</div>
 <div id="resetModal" class="modal-overlay hidden">
   <div class="modal-box">
     <div style="font-weight:700;margin-bottom:8px">Are you sure you want to reset your save?</div>
@@ -342,9 +391,15 @@ renderOwned = function(){
 // Use event delegation so handlers still work if elements change dynamically
 document.addEventListener('click', (e) => {
   const target = e.target;
-  // Open modal
+  // Open about modal
+  if (target.closest && target.closest('#aboutBtn')) {
+    const m = document.getElementById('aboutModal'); if (m) m.classList.remove('hidden');
+    return;
+  }
+  // Open reset modal from about modal
   if (target.closest && target.closest('#resetBtn')) {
-    const m = document.getElementById('resetModal'); if (m) m.classList.remove('hidden');
+    const aboutModal = document.getElementById('aboutModal'); if (aboutModal) aboutModal.classList.add('hidden');
+    const resetModal = document.getElementById('resetModal'); if (resetModal) resetModal.classList.remove('hidden');
     return;
   }
   // Open collection modal
@@ -352,7 +407,12 @@ document.addEventListener('click', (e) => {
     const m = document.getElementById('collectionModal'); if (m) { renderCollection(); m.classList.remove('hidden'); }
     return;
   }
-  // Cancel / close modal
+  // Close about modal
+  if (target.closest && target.closest('#closeAbout')) {
+    const m = document.getElementById('aboutModal'); if (m) m.classList.add('hidden');
+    return;
+  }
+  // Cancel / close reset modal
   if (target.closest && target.closest('#cancelReset')) {
     const m = document.getElementById('resetModal'); if (m) m.classList.add('hidden');
     return;
@@ -375,6 +435,7 @@ document.addEventListener('click', (e) => {
     return;
   }
   // Clicking on overlay (outside modal-box) should close
+  if (target.id === 'aboutModal') { target.classList.add('hidden'); return; }
   if (target.id === 'resetModal') { target.classList.add('hidden'); return; }
   if (target.id === 'collectionModal') { target.classList.add('hidden'); return; }
 });
