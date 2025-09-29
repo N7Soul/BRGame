@@ -5,6 +5,7 @@ header{display:flex;justify-content:space-between;align-items:center;margin-bott
 h1{font-size:24px;margin:0}
 .card{background:var(--card);padding:12px;border-radius:12px;box-shadow:0 6px 20px rgba(2,6,23,.6)}
 button{background:var(--accent);border:0;padding:8px 12px;border-radius:8px;color:white;cursor:pointer}
+button.disabled{background:#4c1d95;cursor:not-allowed;opacity:0.6}
 .small{Padding:6px 10px;border-radius:8px;background:#111827;border:1px solid rgba(255,255,255,.03)}
 .sell-option{border-radius:6px;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 10px;cursor:pointer;color:var(--muted);transition:background .12s ease,color .12s ease}
 .sell-option:hover{background:rgba(255,255,255,0.03);color:#e6eef8}
@@ -37,7 +38,7 @@ button{background:var(--accent);border:0;padding:8px 12px;border-radius:8px;colo
 .stat{display:flex;gap:12px;align-items:center}
 .currency-stack{display:flex;flex-direction:column;align-items:flex-end;justify-content:center}
 .currency-stack .big{line-height:1}
-.list{overflow:none;margin-top:14px}
+.list{overflow:none;margin-top:5px}
 .item{display:flex;justify-content:space-between;padding:8px;border-radius:8px;margin-bottom:8px;background:linear-gradient(180deg,rgba(255,255,255,.01),transparent)}
 /* Rarity backgrounds (expanded list: common, uncommon, rare, epic, legendary, mythic, secret) */
 .rarity-Common{background:linear-gradient(180deg,rgba(107,114,128,0.10),rgba(17,24,39,0.02));border-left:4px solid #6b7280}
@@ -58,7 +59,7 @@ button{background:var(--accent);border:0;padding:8px 12px;border-radius:8px;colo
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;z-index:1200}
 .modal-box{background:var(--card);padding:18px;border-radius:12px;width:600px; max-width:800px;color:inherit;box-shadow:0 8px 30px rgba(2,6,23,.6)}
 .modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:12px}
-.row{display:flex;gap:8px}
+.row{display:flex;gap:8px;margin-top:-4px}
 .muted{color:var(--muted)}
 .big{font-size:22px;font-weight:700}
 .main-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}

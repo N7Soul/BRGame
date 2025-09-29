@@ -9,7 +9,6 @@ const CREATURES = [
   {name:'Pipi Kiwi',rarity:'Common',weight:70,price:1500,income:13},
   {name:'Racooni Jandelini',rarity:'Common',weight:65,price:1300,income:12},
   {name:'Pipi Corni',rarity:'Common',weight:60,price:1700,income:14},
-
   // rare
   {name:'Trippi Troppi',rarity:'Rare',weight:40,price:2000,income:15},
   {name:'Gangster Footera',rarity:'Rare',weight:35,price:4000,income:30},
@@ -19,7 +18,6 @@ const CREATURES = [
   {name:'Ta Ta Ta Ta Sahur',rarity:'Rare',weight:25,price:7500,income:55},
   {name:'Tric Trac Baraboom',rarity:'Rare',weight:22,price:9000,income:65},
   {name:'Pipi Avocado',rarity:'Rare',weight:20,price:9500,income:70},
-
   // epic
   {name:'Cappuccino Assassino',rarity:'Epic',weight:12,price:10000,income:75},
   {name:'Brr Brr Patapim',rarity:'Epic',weight:10,price:15000,income:100},
@@ -32,7 +30,6 @@ const CREATURES = [
   {name:'Avocadini Guffo',rarity:'Epic',weight:5,price:35000,income:225},
   {name:'Salamino Penguino',rarity:'Epic',weight:4.5,price:40000,income:250},
   {name:'Penguino Cocosino',rarity:'Epic',weight:4,price:45000,income:300},
-
   // legendary
   {name:'Burbaloni Loliloli',rarity:'Legendary',weight:2.5,price:35000,income:200},
   {name:'Chimpazini Bananini',rarity:'Legendary',weight:2.2,price:50000,income:300},
@@ -46,7 +43,6 @@ const CREATURES = [
   {name:'Cocosini Mama',rarity:'Legendary',weight:0.8,price:285000,income:1200},
   {name:'Sigma Boy',rarity:'Legendary',weight:0.7,price:325000,income:1300},
   {name:'Pi Pi Watermelon',rarity:'Legendary',weight:0.6,price:135000,income:1300},
-
   // mythic
   {name:'Frigo Camelo',rarity:'Mythic',weight:0.4,price:300000,income:1400},
   {name:'Orangutini Ananassini',rarity:'Mythic',weight:0.35,price:400000,income:1700},
@@ -61,7 +57,6 @@ const CREATURES = [
   {name:'Te Te Te Sahur',rarity:'Mythic',weight:0.09,price:2500000,income:9500},
   {name:'Lerulerulerule',rarity:'Mythic',weight:0.08,price:3500000,income:8700},
   {name:'Tracoducotulu Delapeladustuz',rarity:'Mythic',weight:0.07,price:3000000,income:12000},
-
   // brainrot god
   {name:'Coco Elefanto',rarity:'Brainrot God',weight:0.05,price:5000000,income:10000},
   {name:'Girafa Celestre',rarity:'Brainrot God',weight:0.048,price:7500000,income:20000},
@@ -90,7 +85,6 @@ const CREATURES = [
   {name:'Los Orcalitos',rarity:'Brainrot God',weight:0.006,price:45000000,income:235000},
   {name:'Los Tipi Tacos',rarity:'Brainrot God',weight:0.005,price:46000000,income:260000},
   {name:'Bombardini Tortinii',rarity:'Brainrot God',weight:0.004,price:50000000,income:225000},
-
   // secret
   {name:'Las Sis',rarity:'Secret',weight:0.003,price:25000000,income:17500000},
   {name:'La Vacca Staturno Saturnita',rarity:'Secret',weight:0.0029,price:50000000,income:250000},
@@ -129,10 +123,16 @@ const CREATURES = [
   {name:'Ketchuru and Musturu',rarity:'Secret',weight:0.00014,price:7500000000,income:42500000},
   {name:'Garama and Madundung',rarity:'Secret',weight:0.00013,price:10000000000,income:50000000},
   {name:'Dragon Cannelloni',rarity:'Secret',weight:0.00012,price:100000000000,income:100000000},
-
   // og
-  {name:'Strawberry Elephant',rarity:'OG',weight:0.00001,price:500000000000,income:250000000}
-  
+  {name:'Derktism Trainino',rarity:'OG',weight:0.00001,price:500000000000,income:250000000},
+  {name:'Davidinni Prereleasito',rarity:'OG',weight:0.00001,price:500000000000,income:250000000},
+  {name:'Tynino Swolgrande',rarity:'OG',weight:0.00001,price:500000000000,income:250000000},
+  {name:'Dandutto Sleepini',rarity:'OG',weight:0.00001,price:500000000000,income:250000000},
+  {name:'Bree No Bicus Dicus',rarity:'OG',weight:0.00001,price:500000000000,income:250000000},
+  {name:'Roborni Cheatorni',rarity:'OG',weight:0.00001,price:500000000000,income:250000000},
+  {name:'Jordonia Verizonia',rarity:'OG',weight:0.00001,price:500000000000,income:250000000},
+  {name:'Nikkito Parverino',rarity:'OG',weight:0.00001,price:500000000000,income:250000000},
+  {name:'Tifforny Pooterus',rarity:'OG',weight:0.00001,price:500000000000,income:250000000},
 ];
 
 let state = {currency:25,vault:[],conveyor:[],multiplier:1,discovered:[],ownedCounts:{}};
@@ -174,8 +174,10 @@ const incomeBtn = document.getElementById('incomeBtn');
 function renderSpawner(){
   spawnListEl.innerHTML='';
   state.conveyor.slice().forEach((c,i)=>{
+  const canAfford = state.currency >= c.price;
   const div=document.createElement('div');div.className='item rarity-'+c.rarity;
-  div.innerHTML=`<div><div class='creature-name'>${c.name}</div><div class='rarity-text muted'>${c.rarity} - Monini: ${c.income} Cash/Sec</div></div><div style='text-align:center;display:flex;align-items:center;justify-content:center'><button>Buy for $${fmt(c.price)}</button></div>`;
+  const buttonClass = canAfford ? '' : ' disabled';
+  div.innerHTML=`<div><div class='creature-name'>${c.name}</div><div class='rarity-text muted'>${c.rarity} - Monini: ${c.income} Cash/Sec</div></div><div style='text-align:center;display:flex;align-items:center;justify-content:center'><button class='${buttonClass}'>Buy for $${fmt(c.price)}</button></div>`;
     spawnListEl.appendChild(div);
     div.querySelector('button').onclick=()=>{
       if(state.currency<c.price) return;
