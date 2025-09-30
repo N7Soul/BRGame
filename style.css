@@ -1,10 +1,11 @@
 :root{--bg:#24365c;--card:#111827;--muted:#9ca3af;--accent:#7c3aed;--success:#10b981}
-html,body{height:100%;margin:0;background:var(--bg);font-family:Inter,system-ui,Segoe UI,Roboto,Arial;color:#e6eef8}
-.app{max-width:1500px;margin:28px auto;padding:18px;display:grid;grid-template-rows:auto 1fr;gap:12px}
+html,body{height:100%;margin:0;background:var(--bg);font-family:Inter,system-ui,Segoe UI,Roboto,Arial;color:#e6eef8;overflow-x:hidden}
+.app{max-width:100%;margin:28px auto;padding:18px;display:grid;grid-template-rows:auto 1fr;gap:12px;overflow-x:hidden}
 header{display:flex;justify-content:center;align-items:flex-start;margin-bottom:12px;position:relative}
 header .stat{position:static;transform:none}
-header h1{position:absolute;top:100px;left:50%;transform:translateX(-50%)}
-h1{font-size:24px;margin:0}
+header h1{position:absolute;top:50%;left:50%;transform:translate(calc(-50% - 443.5px), -50%);z-index:10}
+header h2{position:absolute;top:50%;left:50%;transform:translate(calc(-50% + 443.5px), -50%);z-index:10}
+h1,h2{font-size:24px;margin:0}
 .card{background:var(--card);padding:12px;border-radius:12px;box-shadow:0 6px 20px rgba(2,6,23,.6)}
 button{background:var(--accent);border:0;padding:8px 12px;border-radius:8px;color:white;cursor:pointer}
 button.disabled{background:#4c1d95;cursor:not-allowed;opacity:0.6}
@@ -64,15 +65,22 @@ button.disabled{background:#4c1d95;cursor:not-allowed;opacity:0.6}
 .row{display:flex;gap:8px;margin-top:-4px}
 .muted{color:var(--muted)}
 .big{font-size:22px;font-weight:700}
-.main-grid{display:grid;grid-template-columns:3fr 2fr 3fr;gap:12px}
+.main-grid{display:grid;grid-template-columns:500px 375px 500px;gap:12px;justify-content:center}
 
 /* Responsive breakpoints to prevent card overlap */
-@media (max-width: 1200px) {
-  .main-grid{grid-template-columns:1fr 1fr 1fr;gap:8px}
-  .app{max-width:1200px;padding:12px}
+@media (max-width: 1450px) {
+  .main-grid{grid-template-columns:1fr 300px 1fr;gap:8px;justify-content:center}
+  .app{max-width:100%;padding:12px}
+  header h1{left:25%;transform:translateX(-50%)}
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1200px) {
+  .main-grid{grid-template-columns:1fr 1fr 1fr;gap:8px;justify-content:center}
+  .app{max-width:100%;padding:12px}
+  header h1{left:16.67%;transform:translateX(-50%)}
+}
+
+@media (max-width: 700px) {
   .main-grid{grid-template-columns:1fr;gap:12px}
   .app{padding:12px}
   header .stat{position:static;transform:none;margin-top:12px}

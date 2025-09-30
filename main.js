@@ -44,85 +44,85 @@ const CREATURES = [
   {name:'Sigma Boy',rarity:'Legendary',weight:0.7,price:325000,income:1300},
   {name:'Pi Pi Watermelon',rarity:'Legendary',weight:0.6,price:135000,income:1300},
   // Mythic
-  {name:'Frigo Camelo',rarity:'Mythic',weight:0.4,price:300000,income:1400},
-  {name:'Orangutini Ananassini',rarity:'Mythic',weight:0.35,price:400000,income:1700},
-  {name:'Rhino Toasterino',rarity:'Mythic',weight:0.3,price:450000,income:2100},
-  {name:'Bombardiro Crocodilo',rarity:'Mythic',weight:0.25,price:500000,income:2500},
-  {name:'Bombombini Gusini',rarity:'Mythic',weight:0.2,price:1000000,income:5000},
-  {name:'Avocadorilla',rarity:'Mythic',weight:0.18,price:2000000,income:7500},
-  {name:'Cavallo Virtuso',rarity:'Mythic',weight:0.16,price:2500000,income:7500},
-  {name:'Gorillo Watermelondrillo',rarity:'Mythic',weight:0.14,price:3000000,income:8000},
-  {name:'Tob Tobi Tobi',rarity:'Mythic',weight:0.12,price:3500000,income:8500},
-  {name:'Ganganzelli Trulala',rarity:'Mythic',weight:0.1,price:4000000,income:9000},
+  {name:'Frigo Camelo',rarity:'Mythic',weight:0.115,price:300000,income:1400},
+  {name:'Orangutini Ananassini',rarity:'Mythic',weight:0.1125,price:400000,income:1700},
+  {name:'Rhino Toasterino',rarity:'Mythic',weight:0.11,price:450000,income:2100},
+  {name:'Bombardiro Crocodilo',rarity:'Mythic',weight:0.1075,price:500000,income:2500},
+  {name:'Bombombini Gusini',rarity:'Mythic',weight:0.105,price:1000000,income:5000},
+  {name:'Avocadorilla',rarity:'Mythic',weight:0.1025,price:2000000,income:7500},
+  {name:'Cavallo Virtuso',rarity:'Mythic',weight:0.1,price:2500000,income:7500},
+  {name:'Gorillo Watermelondrillo',rarity:'Mythic',weight:0.0975,price:3000000,income:8000},
+  {name:'Tob Tobi Tobi',rarity:'Mythic',weight:0.095,price:3500000,income:8500},
+  {name:'Ganganzelli Trulala',rarity:'Mythic',weight:0.0925,price:4000000,income:9000},
   {name:'Te Te Te Sahur',rarity:'Mythic',weight:0.09,price:2500000,income:9500},
-  {name:'Lerulerulerule',rarity:'Mythic',weight:0.08,price:3500000,income:8700},
-  {name:'Tracoducotulu Delapeladustuz',rarity:'Mythic',weight:0.07,price:3000000,income:12000},
+  {name:'Lerulerulerule',rarity:'Mythic',weight:0.0875,price:3500000,income:8700},
+  {name:'Tracoducotulu Delapeladustuz',rarity:'Mythic',weight:0.085,price:3000000,income:12000},
   // Brainrot God
-  {name:'Coco Elefanto',rarity:'Brainrot God',weight:0.05,price:5000000,income:10000},
-  {name:'Girafa Celestre',rarity:'Brainrot God',weight:0.048,price:7500000,income:20000},
-  {name:'Gattatino Nyanino',rarity:'Brainrot God',weight:0.046,price:7500000,income:35000},
-  {name:'Chihuanini Taconini',rarity:'Brainrot God',weight:0.044,price:8500000,income:45000},
-  {name:'Matteo',rarity:'Brainrot God',weight:0.042,price:10000000,income:50000},
-  {name:'Tralalero Tralala',rarity:'Brainrot God',weight:0.04,price:10000000,income:50000},
-  {name:'Los Crocodillitos',rarity:'Brainrot God',weight:0.038,price:12500000,income:55000},
-  {name:'Odin Din Din Dun',rarity:'Brainrot God',weight:0.036,price:15000000,income:75000},
-  {name:'Statutino Libertino',rarity:'Brainrot God',weight:0.034,price:20000000,income:75000},
-  {name:'Tukanno Bananno',rarity:'Brainrot God',weight:0.032,price:22500000,income:100000},
-  {name:'Tipi Topi Taco',rarity:'Brainrot God',weight:0.03,price:20000000,income:75000},
-  {name:'Extinct Ballerina',rarity:'Brainrot God',weight:0.028,price:23500000,income:125000},
-  {name:'Tralalita Tralala',rarity:'Brainrot God',weight:0.026,price:20000000,income:100000},
-  {name:'Espresso Signora',rarity:'Brainrot God',weight:0.024,price:25000000,income:70000},
-  {name:'Trenostruzzo Turbo 3000',rarity:'Brainrot God',weight:0.022,price:25000000,income:150000},
-  {name:'Urubini Flamenguini',rarity:'Brainrot God',weight:0.02,price:30000000,income:150000},
-  {name:'Trippi Troppi Troppa Trippa',rarity:'Brainrot God',weight:0.018,price:30000000,income:175000},
-  {name:'Gattito Tacoto',rarity:'Brainrot God',weight:0.016,price:32500000,income:160000},
-  {name:'Ballerino Lololo',rarity:'Brainrot God',weight:0.014,price:35000000,income:200000},
-  {name:'Pakrahmatmamat',rarity:'Brainrot God',weight:0.012,price:37500000,income:215000},
-  {name:'Los Tungtungtungcitos',rarity:'Brainrot God',weight:0.01,price:37500000,income:210000},
-  {name:'Piccione Macchina',rarity:'Brainrot God',weight:0.009,price:40000000,income:225000},
-  {name:'Tractoro Dinosauro',rarity:'Brainrot God',weight:0.008,price:42500000,income:230000},
-  {name:'Los Bombinitos',rarity:'Brainrot God',weight:0.007,price:42500000,income:220000},
-  {name:'Los Orcalitos',rarity:'Brainrot God',weight:0.006,price:45000000,income:235000},
-  {name:'Los Tipi Tacos',rarity:'Brainrot God',weight:0.005,price:46000000,income:260000},
-  {name:'Bombardini Tortinii',rarity:'Brainrot God',weight:0.004,price:50000000,income:225000},
+  {name:'Coco Elefanto',rarity:'Brainrot God',weight:0.0825,price:5000000,income:10000},
+  {name:'Girafa Celestre',rarity:'Brainrot God',weight:0.08,price:7500000,income:20000},
+  {name:'Gattatino Nyanino',rarity:'Brainrot God',weight:0.0775,price:7500000,income:35000},
+  {name:'Chihuanini Taconini',rarity:'Brainrot God',weight:0.075,price:8500000,income:45000},
+  {name:'Matteo',rarity:'Brainrot God',weight:0.0725,price:10000000,income:50000},
+  {name:'Tralalero Tralala',rarity:'Brainrot God',weight:0.07,price:10000000,income:50000},
+  {name:'Los Crocodillitos',rarity:'Brainrot God',weight:0.0675,price:12500000,income:55000},
+  {name:'Odin Din Din Dun',rarity:'Brainrot God',weight:0.065,price:15000000,income:75000},
+  {name:'Statutino Libertino',rarity:'Brainrot God',weight:0.0625,price:20000000,income:75000},
+  {name:'Tukanno Bananno',rarity:'Brainrot God',weight:0.06,price:22500000,income:100000},
+  {name:'Tipi Topi Taco',rarity:'Brainrot God',weight:0.0575,price:20000000,income:75000},
+  {name:'Extinct Ballerina',rarity:'Brainrot God',weight:0.055,price:23500000,income:125000},
+  {name:'Tralalita Tralala',rarity:'Brainrot God',weight:0.0525,price:20000000,income:100000},
+  {name:'Espresso Signora',rarity:'Brainrot God',weight:0.05,price:25000000,income:70000},
+  {name:'Trenostruzzo Turbo 3000',rarity:'Brainrot God',weight:0.0475,price:25000000,income:150000},
+  {name:'Urubini Flamenguini',rarity:'Brainrot God',weight:0.045,price:30000000,income:150000},
+  {name:'Trippi Troppi Troppa Trippa',rarity:'Brainrot God',weight:0.0425,price:30000000,income:175000},
+  {name:'Gattito Tacoto',rarity:'Brainrot God',weight:0.04,price:32500000,income:160000},
+  {name:'Ballerino Lololo',rarity:'Brainrot God',weight:0.0375,price:35000000,income:200000},
+  {name:'Pakrahmatmamat',rarity:'Brainrot God',weight:0.035,price:37500000,income:215000},
+  {name:'Los Tungtungtungcitos',rarity:'Brainrot God',weight:0.0325,price:37500000,income:210000},
+  {name:'Piccione Macchina',rarity:'Brainrot God',weight:0.03,price:40000000,income:225000},
+  {name:'Tractoro Dinosauro',rarity:'Brainrot God',weight:0.0275,price:42500000,income:230000},
+  {name:'Los Bombinitos',rarity:'Brainrot God',weight:0.025,price:42500000,income:220000},
+  {name:'Los Orcalitos',rarity:'Brainrot God',weight:0.0225,price:45000000,income:235000},
+  {name:'Los Tipi Tacos',rarity:'Brainrot God',weight:0.02,price:46000000,income:260000},
+  {name:'Bombardini Tortinii',rarity:'Brainrot God',weight:0.0175,price:50000000,income:225000},
   // Secret
-  {name:'Las Sis',rarity:'Secret',weight:0.003,price:25000000,income:17500},
-  {name:'La Vacca Staturno Saturnita',rarity:'Secret',weight:0.0029,price:30000000,income:25000},
-  {name:'Blackhole Goat',rarity:'Secret',weight:0.0028,price:45000000,income:40000},
-  {name:'Agarrini la Palini',rarity:'Secret',weight:0.0027,price:60000000,income:42500},
-  {name:'Los Matteos',rarity:'Secret',weight:0.0026,price:75000000,income:30000},
-  {name:'Chimpanzini Spiderini',rarity:'Secret',weight:0.0025,price:100000000,income:32500},
-  {name:'Sammyini Spyderini',rarity:'Secret',weight:0.0024,price:125000000,income:32500},
-  {name:'Extinct Tralalero',rarity:'Secret',weight:0.0023,price:150000000,income:45000},
-  {name:'Extinct Matteo',rarity:'Secret',weight:0.0022,price:175000000,income:62500},
-  {name:'Dul Dul Dul',rarity:'Secret',weight:0.0021,price:200000000,income:37500},
-  {name:'Los Tralaleritos',rarity:'Secret',weight:0.002,price:225000000,income:50000},
-  {name:'Las Tralaleritas',rarity:'Secret',weight:0.0019,price:250000000,income:65000},
-  {name:'Las Vaquitas Saturnitas',rarity:'Secret',weight:0.0018,price:275000000,income:75000},
-  {name:'La Karkerkar Combinasion',rarity:'Secret',weight:0.0017,price:300000000,income:70000},
-  {name:'Job Job Job Sahur',rarity:'Secret',weight:0.0016,price:325000000,income:70000},
-  {name:'Los Spyderrinis',rarity:'Secret',weight:0.0015,price:350000000,income:45000},
-  {name:'Graipuss Medussi',rarity:'Secret',weight:0.0014,price:375000000,income:100000},
-  {name:'Los Hotspotsitos',rarity:'Secret',weight:0.0013,price:400000000,income:2000000},
-  {name:'Nooo My Hotspot',rarity:'Secret',weight:0.0012,price:425000000,income:150000},
-  {name:'La Sahur Combinasion',rarity:'Secret',weight:0.0011,price:450000000,income:200000},
-  {name:'Quesadilla Crocodila',rarity:'Secret',weight:0.001,price:475000000,income:300000},
-  {name:'Chicleteira Bicicleteira',rarity:'Secret',weight:0.0009,price:500000000,income:350000},
-  {name:'Spaghetti Tualetti',rarity:'Secret',weight:0.0008,price:525000000,income:6000000},
-  {name:'La Grande Combinasion',rarity:'Secret',weight:0.0007,price:550000000,income:1000000},
-  {name:'Los Noo My Hotspotsitos',rarity:'Secret',weight:0.0006,price:575000000,income:500000},
-  {name:'67',rarity:'Secret',weight:0.0005,price:600000000,income:750000},
-  {name:'Los Combinasionas',rarity:'Secret',weight:0.0004,price:625000000,income:6370000},
-  {name:'Karkerkar Kurkur',rarity:'Secret',weight:0.0003,price:650000000,income:240000},
-  {name:'Nuclearo Dinossauro',rarity:'Secret',weight:0.0002,price:675000000,income:1500000},
-  {name:'Celularcini Viciosini',rarity:'Secret',weight:0.00019,price:700000000,income:2250000},
-  {name:'Tralaledon',rarity:'Secret',weight:0.00018,price:725000000,income:2750000},
-  {name:'La Extinct Grande',rarity:'Secret',weight:0.00017,price:750000000,income:2350000},
-  {name:'Ketupat Kepat',rarity:'Secret',weight:0.00016,price:775000000,income:3500000},
-  {name:'La Supreme Combinasion',rarity:'Secret',weight:0.00015,price:800000000,income:4000000},
-  {name:'Ketchuru and Musturu',rarity:'Secret',weight:0.00014,price:825000000,income:4250000},
-  {name:'Garama and Madundung',rarity:'Secret',weight:0.00013,price:850000000,income:5000000},
-  {name:'Dragon Cannelloni',rarity:'Secret',weight:0.00012,price:1000000000,income:10000000},
+  {name:'Las Sis',rarity:'Secret',weight:0.01,price:25000000,income:17500},
+  {name:'La Vacca Staturno Saturnita',rarity:'Secret',weight:0.00975,price:30000000,income:25000},
+  {name:'Blackhole Goat',rarity:'Secret',weight:0.0095,price:45000000,income:40000},
+  {name:'Agarrini la Palini',rarity:'Secret',weight:0.00925,price:60000000,income:42500},
+  {name:'Los Matteos',rarity:'Secret',weight:0.009,price:75000000,income:30000},
+  {name:'Chimpanzini Spiderini',rarity:'Secret',weight:0.00875,price:100000000,income:32500},
+  {name:'Sammyini Spyderini',rarity:'Secret',weight:0.0085,price:125000000,income:32500},
+  {name:'Extinct Tralalero',rarity:'Secret',weight:0.00825,price:150000000,income:45000},
+  {name:'Extinct Matteo',rarity:'Secret',weight:0.008,price:175000000,income:62500},
+  {name:'Dul Dul Dul',rarity:'Secret',weight:0.00775,price:200000000,income:37500},
+  {name:'Los Tralaleritos',rarity:'Secret',weight:0.0075,price:225000000,income:50000},
+  {name:'Las Tralaleritas',rarity:'Secret',weight:0.00725,price:250000000,income:65000},
+  {name:'Las Vaquitas Saturnitas',rarity:'Secret',weight:0.007,price:275000000,income:75000},
+  {name:'La Karkerkar Combinasion',rarity:'Secret',weight:0.00675,price:300000000,income:70000},
+  {name:'Job Job Job Sahur',rarity:'Secret',weight:0.0065,price:325000000,income:70000},
+  {name:'Los Spyderrinis',rarity:'Secret',weight:0.00625,price:350000000,income:45000},
+  {name:'Graipuss Medussi',rarity:'Secret',weight:0.006,price:375000000,income:100000},
+  {name:'Los Hotspotsitos',rarity:'Secret',weight:0.00575,price:400000000,income:2000000},
+  {name:'Nooo My Hotspot',rarity:'Secret',weight:0.0055,price:425000000,income:150000},
+  {name:'La Sahur Combinasion',rarity:'Secret',weight:0.00525,price:450000000,income:200000},
+  {name:'Quesadilla Crocodila',rarity:'Secret',weight:0.005,price:475000000,income:300000},
+  {name:'Chicleteira Bicicleteira',rarity:'Secret',weight:0.00475,price:500000000,income:350000},
+  {name:'Spaghetti Tualetti',rarity:'Secret',weight:0.0045,price:525000000,income:6000000},
+  {name:'La Grande Combinasion',rarity:'Secret',weight:0.00425,price:550000000,income:1000000},
+  {name:'Los Noo My Hotspotsitos',rarity:'Secret',weight:0.004,price:575000000,income:500000},
+  {name:'67',rarity:'Secret',weight:0.00375,price:600000000,income:750000},
+  {name:'Los Combinasionas',rarity:'Secret',weight:0.0035,price:625000000,income:6370000},
+  {name:'Karkerkar Kurkur',rarity:'Secret',weight:0.00325,price:650000000,income:240000},
+  {name:'Nuclearo Dinossauro',rarity:'Secret',weight:0.003,price:675000000,income:1500000},
+  {name:'Celularcini Viciosini',rarity:'Secret',weight:0.00275,price:700000000,income:2250000},
+  {name:'Tralaledon',rarity:'Secret',weight:0.0025,price:725000000,income:2750000},
+  {name:'La Extinct Grande',rarity:'Secret',weight:0.00225,price:750000000,income:2350000},
+  {name:'Ketupat Kepat',rarity:'Secret',weight:0.002,price:775000000,income:3500000},
+  {name:'La Supreme Combinasion',rarity:'Secret',weight:0.00175,price:800000000,income:4000000},
+  {name:'Ketchuru and Musturu',rarity:'Secret',weight:0.0015,price:825000000,income:4250000},
+  {name:'Garama and Madundung',rarity:'Secret',weight:0.00125,price:850000000,income:5000000},
+  {name:'Dragon Cannelloni',rarity:'Secret',weight:0.001,price:1000000000,income:10000000},
   // OG
   {name:'Derktism Trainino',rarity:'OG',weight:0.00001,price:50000000000,income:25000000},
   {name:'Davidinni Prereleasito',rarity:'OG',weight:0.00001,price:50000000000,income:2500000},
@@ -143,6 +143,11 @@ function rarityRank(r){ return RARITY_RANK[(r||'').toLowerCase()] || 0 }
 
 function saveState(){
   localStorage.setItem('collector', JSON.stringify(state));
+  // Also save countdown timer
+  localStorage.setItem('countdownTimer', JSON.stringify({
+    refreshRemaining: refreshRemaining,
+    lastSaved: Date.now()
+  }));
 }
 function loadState(){
   const saved = localStorage.getItem('collector');
@@ -162,14 +167,72 @@ function loadState(){
       state.vault.forEach(v=>{ state.ownedCounts[v.name] = (state.ownedCounts[v.name]||0)+1 });
     }
   }
+  
+  // Load countdown timer
+  const savedTimer = localStorage.getItem('countdownTimer');
+  if(savedTimer) {
+    try {
+      const timerData = JSON.parse(savedTimer);
+      const timePassed = Math.floor((Date.now() - timerData.lastSaved) / 1000);
+      refreshRemaining = Math.max(0, timerData.refreshRemaining - timePassed);
+      
+      // If timer expired while away, refresh immediately
+      if(refreshRemaining <= 0) {
+        spawnRandom();
+        refreshRemaining = REFRESH_INTERVAL;
+      }
+    } catch(e) {
+      // If there's an error parsing, just use default
+      refreshRemaining = REFRESH_INTERVAL;
+    }
+  }
+  
+  // If no conveyor exists or is empty, spawn new creatures
+  if(!state.conveyor || state.conveyor.length === 0) {
+    spawnRandom();
+  }
 }
 
 function fmt(n){return Math.floor(n).toLocaleString()}
 function pickWeighted(list){
-  const total = list.reduce((s,c)=>s+c.weight,0);
+  // Apply luck modifiers to weights
+  const modifiedList = list.map(creature => {
+    const luckEffect = getLuckEffect(creature.rarity, state.luck);
+    return {
+      ...creature,
+      weight: Math.max(0.001, creature.weight * luckEffect) // Ensure minimum weight
+    };
+  });
+  
+  const total = modifiedList.reduce((s,c)=>s+c.weight,0);
   let r=Math.random()*total;
-  for(const c of list){r-=c.weight;if(r<=0) return {...c}};
-  return {...list[list.length-1]};
+  for(const c of modifiedList){r-=c.weight;if(r<=0) return {...c}};
+  return {...modifiedList[modifiedList.length-1]};
+}
+
+// Luck effect configuration - easily adjustable
+function getLuckEffect(rarity, luckLevel) {
+  if (luckLevel === 0) return 1; // No luck = no change
+  
+  // Base multiplier per luck level (easily adjustable)
+  const luckMultiplier = 0.02; // 2% change per luck level
+  
+  // Rarity multipliers (easily adjustable)
+  const rarityMultipliers = {
+    'Common': -1,           // Decreases common spawns
+    'Rare': 0.2,           // Slight increase
+    'Epic': 0.5,           // Moderate increase  
+    'Legendary': 1,        // Good increase
+    'Mythic': 1.5,         // Better increase
+    'Brainrot God': 2,     // Great increase
+    'Secret': 2.5,         // Best increase
+    'OG': 3               // Ultimate increase
+  };
+  
+  const rarityMult = rarityMultipliers[rarity] || 0;
+  const effect = 1 + (luckLevel * luckMultiplier * rarityMult);
+  
+  return Math.max(0.1, effect); // Prevent weights from going too low
 }
 
 const currencyEl=document.getElementById('currency');
@@ -261,6 +324,17 @@ function tickCountdown(){
   }
   const countdownEl = document.getElementById('countdown');
   if(countdownEl) countdownEl.textContent = String(refreshRemaining);
+  
+  // Save countdown state periodically
+  saveCountdownOnly();
+}
+
+// Save only countdown data (more efficient than full state save)
+function saveCountdownOnly() {
+  localStorage.setItem('countdownTimer', JSON.stringify({
+    refreshRemaining: refreshRemaining,
+    lastSaved: Date.now()
+  }));
 }
 
 // Ensure we only have one countdown interval running
@@ -276,7 +350,6 @@ startCountdown();
 setInterval(()=>{state.currency+=state.vault.reduce((s,c)=>s+c.income,0)*state.multiplier*state.incomeMultiplier/2;renderAll();saveState();},500);
 
 loadState();
-spawnRandom();
 renderAll();
 
 // Initialize countdown display
@@ -304,18 +377,27 @@ const modalHtml = `
 <div id="aboutModal" class="modal-overlay hidden">
   <div class="modal-box" style="max-height:80vh;overflow-y:auto">
     <div style="font-weight:700;margin-bottom:8px">About Brainrotini Gamini</div>
-    <div style="font-weight:700;margin-bottom:8px">(email dcrider2003@gmail.com with title "BRGame Bug" for support)</div>
+    <div style="font-weight:700;margin-bottom:8px;color: #16bfc5ff">(email dcrider2003@gmail.com with title "BRGame Bug" for support)</div>
     <div style="color:var(--muted);margin-bottom:16px">
       <p>Welcome to Brainrotini Gamini! Collect brainrots and make the most money!</p>
       <p>Each brainrot generates Monini over time. Discover rare creatures and build your collection!</p>
-      <p>Features:</p>
+      <p><em>**This game is very WIP and under development by me (with little coding experience) and AI, so I'm doing my best!**</em></p>
+      <div style="font-weight:700;margin-bottom:8px;color: #ffffffff">Features:</div>
       <ul style="margin-left:20px">
         <li>100+ unique Brainrot characters</li>
         <li>9 rarity tiers from Common to OG</li>
         <li>Become the greatest Brainrot collector on the planet!</li>
       </ul>
-      <p>Version History:</p>
+      <div style="font-weight:700;margin-bottom:8px;color: #ffffffff">Version History:</div>
         <ul style="margin-left:20px">
+        <li>Version: 0.2.2</li>
+        <ul style="margin-left:20px">
+          <li>Balanced the odds of rarities Mythic and up</li>
+          <li>Repaired luck upgrade so that it *actually* upgrades luck now</li>
+          <li>Fixed the countdown and spawns refreshing with the web page (sorry exploiters!)</li>
+          <li>Adjusted upgrade prices</li>
+          <li>More UI updates for better compatibility (hopefully)</li>
+          </ul>
         <li>Version: 0.2.1</li>
         <ul style="margin-left:20px">
           <li>Updated UI for better user experience on different resolutions</li>
@@ -358,11 +440,11 @@ const modalHtml = `
         </ul>
         <li>Initial Release: 0.1.0</li>
       </ul>
-      <p>Credits:</p>
+      <div style="font-weight:700;margin-bottom:8px;color: #ffffffff">Credits:</div>
       <ul style="margin-left:20px">
         <li>Developer: N7Soul, ChatGPT, Claude Sonnet 4</li>
         <li>Design: N7Soul, ChatGPT, Claude Sonnet 4</li>
-        <li>Special Thanks: CoderSyntax - critiquing my code and making it better everyday!</li>
+        <li>Special Thanks: CoderSyntax - critiquing my code and making it better!</li>
         <li>Special Thanks: Friends doing beta testing and providing feedback for me <3</li>
       </ul>
     </div>
@@ -635,7 +717,7 @@ function upgradeLuck() {
 function getIncomeMultiplierPrice() {
   // Start at $10000, increase by 2.5x each level
   const level = Math.round((state.incomeMultiplier - 1) / 0.1); // Each 0.1 increase is one level
-  return Math.floor(10000 * Math.pow(2.5, level));
+  return Math.floor(100000 * Math.pow(2.5, level));
 }
 
 function upgradeIncomeMultiplier() {
