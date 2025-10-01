@@ -1,5 +1,20 @@
+/* Urban Shadow Custom Font */
+@font-face {
+  font-family: 'Urban Shadow';
+  src: url('fonts/Urban Shadow Sans Serif.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root{--bg:#24365c;--card:#111827;--muted:#9ca3af;--accent:#7c3aed;--success:#10b981}
 html,body{height:100%;margin:0;background:var(--bg);font-family:Inter,system-ui,Segoe UI,Roboto,Arial;color:#e6eef8;overflow-x:hidden}
+
+/* Apply Urban Shadow font to titles */
+h1, h2 {
+  font-family: 'Urban Shadow', Arial, sans-serif !important;
+  letter-spacing: 2px;
+}
 .app{max-width:100%;margin:28px auto;padding:18px;display:grid;grid-template-rows:auto 1fr;gap:12px;overflow-x:hidden}
 header{display:flex;justify-content:center;align-items:flex-start;margin-bottom:12px;position:relative}
 header .stat{position:static;transform:none}
@@ -42,7 +57,7 @@ button.disabled{background:#4c1d95;cursor:not-allowed;opacity:0.6}
 .currency-stack{display:flex;flex-direction:column;align-items:flex-end;justify-content:center}
 .currency-stack .big{line-height:1}
 .list{overflow:none;margin-top:5px}
-.item{display:flex;justify-content:space-between;padding:8px;border-radius:8px;margin-bottom:8px;background:linear-gradient(180deg,rgba(255,255,255,.01),transparent)}
+.item{display:flex;justify-content:space-between;padding:8px;border-radius:8px;margin-bottom:8px;background:linear-gradient(180deg,rgba(255,255,255,0.5),transparent)}
 /* Rarity backgrounds (expanded list: common, uncommon, rare, epic, legendary, mythic, secret) */
 .rarity-Common{background:linear-gradient(180deg,rgba(107,114,128,0.10),rgba(17,24,39,0.02));border-left:4px solid #6b7280}
 .rarity-Uncommon{background:linear-gradient(180deg,rgba(16,185,129,0.10),rgba(17,24,39,0.02));border-left:4px solid #10b981}
@@ -60,8 +75,22 @@ button.disabled{background:#4c1d95;cursor:not-allowed;opacity:0.6}
 /* ensure hidden state overrides the modal-overlay display:flex rule */
 .modal-overlay.hidden{display:none}
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;z-index:1200}
-.modal-box{background:var(--card);padding:18px;border-radius:12px;width:900px; max-width:1200px;color:inherit;box-shadow:0 8px 30px rgba(2,6,23,.6)}
+.modal-box{background:var(--card);padding:18px;border-radius:12px;width:450px; max-width:1200px;color:inherit;box-shadow:0 8px 30px rgba(2,6,23,.6)}
+.modal-box-collection{background:var(--card);padding:18px;border-radius:12px;width:900px; max-width:1200px;color:inherit;box-shadow:0 8px 30px rgba(2,6,23,.6)}
+.modal-box-about{background:var(--card);padding:18px;border-radius:12px;width:900px; max-width:1200px;color:inherit;box-shadow:0 8px 30px rgba(2,6,23,.6)}
 .modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:12px}
+
+/* Collection grid row separators */
+#collectionGrid > div {
+  padding: 1px 2px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* Header row styling */
+.collection-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
 .row{display:flex;gap:8px;margin-top:-4px}
 .muted{color:var(--muted)}
 .big{font-size:22px;font-weight:700}

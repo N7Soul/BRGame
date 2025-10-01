@@ -142,7 +142,10 @@ const RARITY_RANK = {og:9, secret:8, 'Brainrot God':7, mythic:6, legendary:5, ep
 function rarityRank(r){ return RARITY_RANK[(r||'').toLowerCase()] || 0 }
 
 function saveState(){
-  localStorage.setItem('collector', JSON.stringify(state));
+  localStorage.setItem('collector', JSON.stringify({
+    ...state,
+    lastSaveTime: Date.now()
+  }));
   // Also save countdown timer
   localStorage.setItem('countdownTimer', JSON.stringify({
     refreshRemaining: refreshRemaining,
@@ -165,6 +168,14 @@ function loadState(){
     state.ownedCounts = {};
     if(Array.isArray(state.vault)){
       state.vault.forEach(v=>{ state.ownedCounts[v.name] = (state.ownedCounts[v.name]||0)+1 });
+    }
+  }
+  
+  // Calculate offline progression
+  if(state.lastSaveTime) {
+    const offlineProgress = calculateOfflineProgress();
+    if(offlineProgress && offlineProgress.income > 0) {
+      showOfflineModal(offlineProgress);
     }
   }
   
@@ -194,6 +205,79 @@ function loadState(){
 }
 
 function fmt(n){return Math.floor(n).toLocaleString()}
+
+// Offline progression calculation
+function calculateOfflineProgress() {
+  if (!state.lastSaveTime) return null;
+  
+  const now = Date.now();
+  const timeDiffSeconds = (now - state.lastSaveTime) / 1000;
+  
+  // Only show offline progress if away for more than 2 minutes
+  if (timeDiffSeconds < 0) return null;
+  
+  const incomePerSecond = state.vault.reduce((s,c) => s + c.income, 0) * state.multiplier * state.incomeMultiplier;
+  
+  // Cap at 8 hours and apply 50% offline efficiency
+  const maxOfflineSeconds = 8 * 60 * 60; // 8 hours
+  const effectiveTime = Math.min(timeDiffSeconds, maxOfflineSeconds);
+  const offlineIncome = Math.floor(incomePerSecond * effectiveTime * 0.5); // 50% efficiency
+  
+  return {
+    timeAway: timeDiffSeconds,
+    effectiveTime: effectiveTime,
+    income: offlineIncome,
+    wasCapped: timeDiffSeconds > maxOfflineSeconds
+  };
+}
+
+// Format time duration for display
+function formatTime(seconds) {
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const secs = Math.floor(seconds % 60);
+  
+  if (hours > 0) {
+    return `${hours}h ${minutes}m`;
+  } else if (minutes > 0) {
+    return `${minutes}m ${secs}s`;
+  } else {
+    return `${secs}s`;
+  }
+}
+
+// Show offline progress modal
+function showOfflineModal(progress) {
+  const timeAwayText = formatTime(progress.timeAway);
+  const effectiveTimeText = formatTime(progress.effectiveTime);
+  const cappedText = progress.wasCapped ? ' (capped at 8 hours)' : '';
+  
+  const offlineModalHtml = `
+    <div id="offlineModal" class="modal-overlay">
+      <div class="modal-box">
+        <div style="font-weight:700;margin-bottom:16px;text-align:center;color:#10b981">Welcome Back!</div>
+        <div style="color:var(--muted);margin-bottom:16px;text-align:center">
+          <p>You were away for <strong>${timeAwayText}</strong>${cappedText}</p>
+          <p>Your Brainrots earned <strong style="color:#10b981">$${fmt(progress.income)}</strong>!</p>
+          <p style="font-size:12px;color:var(--muted)">Offline efficiency: 50% • Max offline time: 8 hours</p>
+        </div>
+        <div class="modal-actions" style="justify-content:center">
+          <button id="claimOfflineReward" style="background:var(--success);color:white;padding:12px 24px">Claim Reward</button>
+        </div>
+      </div>
+    </div>`;
+  
+  document.body.insertAdjacentHTML('beforeend', offlineModalHtml);
+  
+  // Add event listener for claim button
+  document.getElementById('claimOfflineReward').onclick = () => {
+    state.currency += progress.income;
+    const modal = document.getElementById('offlineModal');
+    if (modal) modal.remove();
+    renderAll();
+    saveState();
+  };
+}
 function pickWeighted(list){
   // Apply luck modifiers to weights
   const modifiedList = list.map(creature => {
@@ -246,7 +330,7 @@ function renderSpawner(){
   const canAfford = state.currency >= c.price;
   const div=document.createElement('div');div.className='item rarity-'+c.rarity.replace(/ /g, '-');
   const buttonClass = canAfford ? '' : ' disabled';
-  div.innerHTML=`<div><div class='creature-name'>${c.name}</div><div class='rarity-text muted'>${c.rarity} - Monini: ${c.income} per Sec</div></div><div style='text-align:center;display:flex;align-items:center;justify-content:center'><button class='${buttonClass}'>Buy for $${fmt(c.price)}</button></div>`;
+  div.innerHTML=`<div><div class='creature-name'>${c.name}</div><div class='rarity-text muted'>${c.rarity} - Monini: ${fmt(c.income)} per Sec</div></div><div style='text-align:center;display:flex;align-items:center;justify-content:center'><button class='${buttonClass}'>Buy for $${fmt(c.price)}</button></div>`;
     spawnListEl.appendChild(div);
     div.querySelector('button').onclick=()=>{
       if(state.currency<c.price) return;
@@ -286,7 +370,7 @@ function renderOwned(){
   sorted.forEach((c)=>{
     const sell=Math.floor(c.price*0.4);
   const div=document.createElement('div');div.className='item rarity-'+c.rarity.replace(/ /g, '-');
-  div.innerHTML=`<div><div class='creature-name'>${c.name}</div><div class='rarity-text muted'>${c.rarity} • income ${c.income} per Sec</div></div><div style='text-align:center;display:flex;align-items:center;justify-content:center'><button>Sell for $${fmt(sell)}</button></div>`;
+  div.innerHTML=`<div><div class='creature-name'>${c.name}</div><div class='rarity-text muted'>${c.rarity} • income ${fmt(c.income)} per Sec</div></div><div style='text-align:center;display:flex;align-items:center;justify-content:center'><button>Sell for $${fmt(sell)}</button></div>`;
     ownedEl.appendChild(div);
     div.querySelector('button').onclick=()=>{
       // find the actual index of this item in state.vault (handles duplicates correctly)
@@ -375,7 +459,9 @@ if(incomeMultiplierBtn) {
 // Modal markup insertion (created here so elements exist)
 const modalHtml = `
 <div id="aboutModal" class="modal-overlay hidden">
-  <div class="modal-box" style="max-height:80vh;overflow-y:auto">
+  <div class="modal-box-about" style="max-height:80vh;overflow-y:auto;position:relative">
+    <!-- Hidden button in top right of modal -->
+    <div id="aboutSecretBtn" style="position:absolute;top:10px;right:10px;width:20px;height:20px;cursor:pointer;opacity:0;"></div>
     <div style="font-weight:700;margin-bottom:8px">About Brainrotini Gamini</div>
     <div style="font-weight:700;margin-bottom:8px;color: #16bfc5ff">(email dcrider2003@gmail.com with title "BRGame Bug" for support)</div>
     <div style="color:var(--muted);margin-bottom:16px">
@@ -390,6 +476,14 @@ const modalHtml = `
       </ul>
       <div style="font-weight:700;margin-bottom:8px;color: #ffffffff">Version History:</div>
         <ul style="margin-left:20px">
+        <li>Version: 0.2.3</li>
+        <ul style="margin-left:20px">
+          <li>Added offline progression (50% efficiency, max 8 hours)</li>
+          <li>Changed location of codes button (so now they are SECRET codes)</li>
+          <li>Added commas so that way income is easier to read</li>
+          <li>Fancy new title font! (Font credit - "Urban Shadow Sans Serif by Blankids")</li>
+          <li>More UI polish</li>
+          </ul>
         <li>Version: 0.2.2</li>
         <ul style="margin-left:20px">
           <li>Balanced the odds of rarities Mythic and up</li>
@@ -456,7 +550,7 @@ const modalHtml = `
 </div>
 <div id="codeModal" class="modal-overlay hidden">
   <div class="modal-box">
-    <div style="font-weight:700;margin-bottom:8px">Redeem Code</div>
+    <div style="font-weight:700;margin-bottom:8px">You found the secret code button!</div>
     <div style="color:var(--muted);margin-bottom:16px">Enter a code to receive rewards:</div>
     <input type="text" id="codeInput" placeholder="Enter code here..." style="width:100%;box-sizing:border-box;padding:8px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);background:var(--card);color:#e6eef8;margin-bottom:16px;font-family:inherit">
     <div id="codeMessage" style="margin-bottom:16px;font-size:14px"></div>
@@ -480,7 +574,7 @@ document.body.insertAdjacentHTML('beforeend', modalHtml);
 // Collection modal (list of all creatures, show name only if owned, else ???)
 const collectionHtml = `
 <div id="collectionModal" class="modal-overlay hidden">
-  <div class="modal-box">
+  <div class="modal-box-collection">
     <div style="font-weight:700;margin-bottom:8px">Collection</div>
     <div style="color:var(--muted);margin-bottom:8px">Your discovered Brainrots</div>
     <div id="collectionGrid" style="max-height:360px;overflow:auto;display:grid;grid-template-columns:6px 1fr 110px 90px 64px;row-gap:8px;padding-right:6px">
@@ -539,7 +633,7 @@ function renderCollection(){
 
     const nameCell = document.createElement('div'); nameCell.className='name'; nameCell.textContent = discovered ? c.name : '???'; el.appendChild(nameCell);
     const rarityCell = document.createElement('div'); rarityCell.className='muted'; rarityCell.textContent = c.rarity; el.appendChild(rarityCell);
-  const incomeCell = document.createElement('div'); incomeCell.className='muted'; incomeCell.textContent = discovered ? `${c.income} per Sec` : ''; el.appendChild(incomeCell);
+  const incomeCell = document.createElement('div'); incomeCell.className='muted'; incomeCell.textContent = discovered ? `${fmt(c.income)} per Sec` : ''; el.appendChild(incomeCell);
     const countCell = document.createElement('div'); countCell.className='count muted'; countCell.style.textAlign='right'; countCell.textContent = String(count); el.appendChild(countCell);
   });
 }
@@ -554,8 +648,13 @@ renderOwned = function(){
 // Use event delegation so handlers still work if elements change dynamically
 document.addEventListener('click', (e) => {
   const target = e.target;
-  // Open code modal when version text is clicked
-  if (target.closest && target.closest('#versionText')) {
+  // Open code modal when secret buttons are clicked
+  if (target.closest && (target.closest('#secretCodeBtn') || target.closest('#aboutSecretBtn'))) {
+    // If clicked from about modal, close it first
+    if (target.closest('#aboutSecretBtn')) {
+      const aboutModal = document.getElementById('aboutModal'); 
+      if (aboutModal) aboutModal.classList.add('hidden');
+    }
     const m = document.getElementById('codeModal'); if (m) m.classList.remove('hidden');
     document.getElementById('codeInput').focus();
     return;
