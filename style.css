@@ -78,6 +78,7 @@ button.disabled{background:#4c1d95;cursor:not-allowed;opacity:0.6}
 .modal-box{background:var(--card);padding:18px;border-radius:12px;width:450px; max-width:1200px;color:inherit;box-shadow:0 8px 30px rgba(2,6,23,.6)}
 .modal-box-collection{background:var(--card);padding:18px;border-radius:12px;width:900px; max-width:1200px;color:inherit;box-shadow:0 8px 30px rgba(2,6,23,.6)}
 .modal-box-about{background:var(--card);padding:18px;border-radius:12px;width:900px; max-width:1200px;color:inherit;box-shadow:0 8px 30px rgba(2,6,23,.6)}
+.modal-box-sell{background:var(--card);padding:18px;border-radius:12px;width:400px; max-width:500px;color:inherit;box-shadow:0 8px 30px rgba(2,6,23,.6)}
 .modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:12px}
 
 /* Collection grid row separators */

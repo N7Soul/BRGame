@@ -29,10 +29,10 @@ const CREATURES = [
   {name:'Ti Ti Ti Sahur',rarity:'Epic',weight:5.5,price:37500,income:225},
   {name:'Avocadini Guffo',rarity:'Epic',weight:5,price:35000,income:225},
   {name:'Salamino Penguino',rarity:'Epic',weight:4.5,price:40000,income:250},
-  {name:'Penguino Cocosino',rarity:'Epic',weight:4,price:45000,income:300},
+  {name:'Penguino Cocosino',rarity:'Epic',weight:4,price:45000,income:275},
   // Legendary
-  {name:'Burbaloni Loliloli',rarity:'Legendary',weight:2.5,price:35000,income:200},
-  {name:'Chimpazini Bananini',rarity:'Legendary',weight:2.2,price:50000,income:300},
+  {name:'Burbaloni Loliloli',rarity:'Legendary',weight:2.5,price:35000,income:300},
+  {name:'Chimpazini Bananini',rarity:'Legendary',weight:2.2,price:50000,income:400},
   {name:'Ballerina Cappuccina',rarity:'Legendary',weight:2,price:100000,income:500},
   {name:'Chef Crabracadabra',rarity:'Legendary',weight:1.8,price:150000,income:600},
   {name:'Lionel Cactuseli',rarity:'Legendary',weight:1.6,price:175000,income:650},
@@ -56,9 +56,9 @@ const CREATURES = [
   {name:'Ganganzelli Trulala',rarity:'Mythic',weight:0.0925,price:4000000,income:9000},
   {name:'Te Te Te Sahur',rarity:'Mythic',weight:0.09,price:2500000,income:9500},
   {name:'Lerulerulerule',rarity:'Mythic',weight:0.0875,price:3500000,income:8700},
-  {name:'Tracoducotulu Delapeladustuz',rarity:'Mythic',weight:0.085,price:3000000,income:12000},
+  {name:'Tracoducotulu Delapeladustuz',rarity:'Mythic',weight:0.085,price:3000000,income:10000},
   // Brainrot God
-  {name:'Coco Elefanto',rarity:'Brainrot God',weight:0.0825,price:5000000,income:10000},
+  {name:'Coco Elefanto',rarity:'Brainrot God',weight:0.0825,price:5000000,income:15000},
   {name:'Girafa Celestre',rarity:'Brainrot God',weight:0.08,price:7500000,income:20000},
   {name:'Gattatino Nyanino',rarity:'Brainrot God',weight:0.0775,price:7500000,income:35000},
   {name:'Chihuanini Taconini',rarity:'Brainrot God',weight:0.075,price:8500000,income:45000},
@@ -124,15 +124,15 @@ const CREATURES = [
   {name:'Garama and Madundung',rarity:'Secret',weight:0.00125,price:850000000,income:5000000},
   {name:'Dragon Cannelloni',rarity:'Secret',weight:0.001,price:1000000000,income:10000000},
   // OG
-  {name:'Derktism Trainino',rarity:'OG',weight:0.00001,price:50000000000,income:25000000},
-  {name:'Davidinni Prereleasito',rarity:'OG',weight:0.00001,price:50000000000,income:2500000},
-  {name:'Tynino Swolgrande',rarity:'OG',weight:0.00001,price:50000000000,income:2500000},
-  {name:'Dandutto Sleepini',rarity:'OG',weight:0.00001,price:50000000000,income:2500000},
-  {name:'Bree No Bicus Dicus',rarity:'OG',weight:0.00001,price:50000000000,income:2500000},
-  {name:'Roborni Cheatorni',rarity:'OG',weight:0.00001,price:50000000000,income:2500000},
-  {name:'Jordonia Verizonia',rarity:'OG',weight:0.00001,price:50000000000,income:2500000},
-  {name:'Nikkito Parverino',rarity:'OG',weight:0.00001,price:50000000000,income:2500000},
-  {name:'Tifforny Pooterus',rarity:'OG',weight:0.00001,price:50000000000,income:2500000},
+  {name:'Derktism Trainino',rarity:'OG',weight:0.00001,price:2500000000,income:25000000},
+  {name:'Davidinni Prereleasito',rarity:'OG',weight:0.00001,price:2500000000,income:2500000},
+  {name:'Tynino Swolgrande',rarity:'OG',weight:0.00001,price:2500000000,income:2500000},
+  {name:'Dandutto Sleepini',rarity:'OG',weight:0.00001,price:2500000000,income:2500000},
+  {name:'Bree No Bicus Dicus',rarity:'OG',weight:0.00001,price:2500000000,income:2500000},
+  {name:'Roborni Cheatorni',rarity:'OG',weight:0.00001,price:2500000000,income:2500000},
+  {name:'Jordonia Verizonia',rarity:'OG',weight:0.00001,price:2500000000,income:2500000},
+  {name:'Nikkito Parverino',rarity:'OG',weight:0.00001,price:2500000000,income:2500000},
+  {name:'Tifforny Pooterus',rarity:'OG',weight:0.00001,price:2500000000,income:2500000},
 ];
 
 let state = {currency:25,vault:[],conveyor:[],multiplier:1,discovered:[],ownedCounts:{},usedCodes:[],maxBrainrots:5,incomeMultiplier:1,luck:0};
@@ -214,7 +214,7 @@ function calculateOfflineProgress() {
   const timeDiffSeconds = (now - state.lastSaveTime) / 1000;
   
   // Only show offline progress if away for more than 2 minutes
-  if (timeDiffSeconds < 0) return null;
+  if (timeDiffSeconds < 120) return null;
   
   const incomePerSecond = state.vault.reduce((s,c) => s + c.income, 0) * state.multiplier * state.incomeMultiplier;
   
@@ -255,14 +255,14 @@ function showOfflineModal(progress) {
   const offlineModalHtml = `
     <div id="offlineModal" class="modal-overlay">
       <div class="modal-box">
-        <div style="font-weight:700;margin-bottom:16px;text-align:center;color:#10b981">Welcome Back!</div>
+        <div style="font-weight:700;margin-bottom:16px;text-align:center;color:#ffffff">Welcome Back!</div>
         <div style="color:var(--muted);margin-bottom:16px;text-align:center">
           <p>You were away for <strong>${timeAwayText}</strong>${cappedText}</p>
-          <p>Your Brainrots earned <strong style="color:#10b981">$${fmt(progress.income)}</strong>!</p>
+          <p>Your Brainrots earned <strong style="color:#ffffff">$${fmt(progress.income)}</strong>!</p>
           <p style="font-size:12px;color:var(--muted)">Offline efficiency: 50% • Max offline time: 8 hours</p>
         </div>
         <div class="modal-actions" style="justify-content:center">
-          <button id="claimOfflineReward" style="background:var(--success);color:white;padding:12px 24px">Claim Reward</button>
+          <button id="claimOfflineReward" style="background:var(--accent);color:white;padding:12px 12px">Claim Rewards!</button>
         </div>
       </div>
     </div>`;
@@ -335,7 +335,11 @@ function renderSpawner(){
     div.querySelector('button').onclick=()=>{
       if(state.currency<c.price) return;
       if(state.vault.length >= state.maxBrainrots) {
-        alert(`You can only own ${state.maxBrainrots} Brainrots! Upgrade your Max Brainrots to own more.`);
+        showSellModal(
+          `You can only own ${state.maxBrainrots} Brainrots! Upgrade your Max Brainrots to own more.`,
+          'Max Brainrots Reached',
+          false
+        );
         return;
       }
       state.currency-=c.price;
@@ -476,6 +480,13 @@ const modalHtml = `
       </ul>
       <div style="font-weight:700;margin-bottom:8px;color: #ffffffff">Version History:</div>
         <ul style="margin-left:20px">
+        <li>Version: 0.2.4</li>
+        <ul style="margin-left:20px">
+          <li>Collection will now sort ascending by income for Brainrots</li>
+          <li>Offline progression will only show if away for more than 2 minutes</li>
+          <li>Slightly adjusted income of various Brainrots</li>
+          <li>Even more UI polish</li>
+          </ul>
         <li>Version: 0.2.3</li>
         <ul style="margin-left:20px">
           <li>Added offline progression (50% efficiency, max 8 hours)</li>
@@ -585,18 +596,32 @@ const collectionHtml = `
     </div>
   </div>
 </div>`;
+
+const sellModalHtml = `
+<div id="sellModal" class="modal-overlay hidden">
+  <div class="modal-box-sell">
+    <div id="sellModalTitle" style="font-weight:700;margin-bottom:8px"></div>
+    <div id="sellModalMessage" style="color:var(--muted);margin-bottom:16px"></div>
+    <div class="modal-actions">
+      <button id="sellModalCancel" class="small" style="display:none">Cancel</button>
+      <button id="sellModalConfirm" style="background:var(--accent);color:white;padding:8px 12px">OK</button>
+    </div>
+  </div>
+</div>`;
+
 document.body.insertAdjacentHTML('beforeend', collectionHtml);
+document.body.insertAdjacentHTML('beforeend', sellModalHtml);
 
 // Build the collection list: show '???' for unowned, reveal name once owned.
 function renderCollection(){
   const el = document.getElementById('collectionGrid');
   if(!el) return;
-  // sort by rarity (OG->secret->brainrot god->mythic->legendary->epic->rare->uncommon->common) then income desc
+  // sort by rarity (OG->secret->brainrot god->mythic->legendary->epic->rare->uncommon->common) then income asc
   const rarityOrder = {OG:1, Secret:2, 'Brainrot God':3, Mythic:4, Legendary:5, Epic:6, Rare:7, Uncommon:8, Common:9};
   const all = [...CREATURES].sort((a,b)=>{
     const r = (rarityOrder[b.rarity]||0) - (rarityOrder[a.rarity]||0);
     if(r!==0) return r;
-    return b.income - a.income;
+    return a.income - b.income;
   });
   // Build header (five cells)
   el.innerHTML = '';
@@ -719,6 +744,7 @@ document.addEventListener('click', (e) => {
   if (target.id === 'aboutModal') { target.classList.add('hidden'); return; }
   if (target.id === 'resetModal') { target.classList.add('hidden'); return; }
   if (target.id === 'collectionModal') { target.classList.add('hidden'); return; }
+  if (target.id === 'sellModal') { target.classList.add('hidden'); return; }
   if (target.id === 'codeModal') { 
     target.classList.add('hidden'); 
     document.getElementById('codeInput').value = '';
@@ -743,11 +769,30 @@ if(sellToggle && sellMenuWrapper && sellMenu){
     const opt = ev.target.closest && ev.target.closest('.sell-option');
     if(!opt) return;
     const rarity = opt.dataset.rarity;
+    
+    // Show confirmation for all sell options
+    let message, title;
     if(rarity === 'all'){
-      if(!confirm('Sell ALL owned Brainrots? This cannot be undone.')) return;
+      message = 'Sell ALL owned Brainrots? This cannot be undone.';
+      title = 'Confirm Sell All';
+    } else {
+      const count = state.vault.filter(v=>String(v.rarity||'').replace(/ /g, '-').toLowerCase() === String(rarity||'').toLowerCase()).length;
+      if(count === 0) {
+        sellMenu.style.display='none';
+        return;
+      }
+      const displayRarity = rarity.replace(/-/g, ' '); // Convert back for display
+      message = `Sell all ${count} ${displayRarity} Brainrots? This cannot be undone.`;
+      title = `Confirm Sell ${displayRarity}`;
     }
-    sellByRarity(rarity);
-    sellMenu.style.display='none';
+    
+    sellMenu.style.display='none'; // Close menu first
+    
+    showSellModal(message, title, true).then((confirmed) => {
+      if(confirmed) {
+        sellByRarity(rarity);
+      }
+    });
   });
   // close when clicking outside
   document.addEventListener('click', (ev)=>{
@@ -777,6 +822,86 @@ function sellByRarity(rarity){
   state.currency += total;
   renderAll();
   saveState();
+  
+  // Show success message
+  if(rarity === 'all') {
+    showSellModal(`Sold ${toSell.length} Brainrots for $${fmt(total)}!`, 'Success', false);
+  } else {
+    showSellModal(`Sold ${toSell.length} ${rarity} Brainrots for $${fmt(total)}!`, 'Success', false);
+  }
+}
+
+function showSellModal(message, title = 'Confirm', showCancel = true) {
+  const modal = document.getElementById('sellModal');
+  const titleEl = document.getElementById('sellModalTitle');
+  const messageEl = document.getElementById('sellModalMessage');
+  const cancelBtn = document.getElementById('sellModalCancel');
+  const confirmBtn = document.getElementById('sellModalConfirm');
+  
+  titleEl.textContent = title;
+  messageEl.textContent = message;
+  cancelBtn.style.display = showCancel ? 'block' : 'none';
+  confirmBtn.textContent = showCancel ? 'Confirm' : 'OK';
+  
+  modal.classList.remove('hidden');
+  
+  // Add countdown timer for sell confirmations
+  if (showCancel && title.includes('Confirm Sell')) {
+    let countdown = 3;
+    confirmBtn.disabled = true;
+    confirmBtn.style.opacity = '0.5';
+    confirmBtn.textContent = `Confirm (${countdown})`;
+    
+    const countdownInterval = setInterval(() => {
+      countdown--;
+      if (countdown > 0) {
+        confirmBtn.textContent = `Confirm (${countdown})`;
+      } else {
+        clearInterval(countdownInterval);
+        confirmBtn.disabled = false;
+        confirmBtn.style.opacity = '1';
+        confirmBtn.textContent = 'Confirm';
+      }
+    }, 1000);
+    
+    // Clean up interval if modal is closed early
+    const cleanup = () => {
+      clearInterval(countdownInterval);
+      confirmBtn.disabled = false;
+      confirmBtn.style.opacity = '1';
+    };
+    
+    // Store cleanup function for later use
+    confirmBtn._countdownCleanup = cleanup;
+  }
+  
+  return new Promise((resolve) => {
+    const handleConfirm = () => {
+      if (confirmBtn.disabled) return; // Prevent clicking during countdown
+      modal.classList.add('hidden');
+      cleanup();
+      resolve(true);
+    };
+    
+    const handleCancel = () => {
+      modal.classList.add('hidden');
+      cleanup();
+      resolve(false);
+    };
+    
+    const cleanup = () => {
+      confirmBtn.removeEventListener('click', handleConfirm);
+      cancelBtn.removeEventListener('click', handleCancel);
+      // Clean up countdown if it exists
+      if (confirmBtn._countdownCleanup) {
+        confirmBtn._countdownCleanup();
+        confirmBtn._countdownCleanup = null;
+      }
+    };
+    
+    confirmBtn.addEventListener('click', handleConfirm);
+    cancelBtn.addEventListener('click', handleCancel);
+  });
 }
 
 // Upgrade system
