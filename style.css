@@ -8,13 +8,121 @@
 }
 
 :root{--bg:#24365c;--card:#111827;--muted:#9ca3af;--accent:#7c3aed;--success:#10b981}
-html,body{height:100%;margin:0;background:var(--bg);font-family:Inter,system-ui,Segoe UI,Roboto,Arial;color:#e6eef8;overflow-x:hidden}
+html,body{
+  height:100%;
+  margin:0;
+  background: var(--bg) url('images/BRGameBackground.png') center center/cover no-repeat;
+  font-family:Inter,system-ui,Segoe UI,Roboto,Arial;
+  color:#e6eef8;
+  overflow-x:hidden
+}
 
 /* Apply Urban Shadow font to titles */
 h1, h2 {
   font-family: 'Urban Shadow', Arial, sans-serif !important;
   letter-spacing: 2px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8), -1px -1px 0px black, 1px -1px 0px black, -1px 1px 0px black, 1px 1px 0px black;
 }
+
+/* Music Player Styles */
+.music-player {
+  width: 100%;
+  max-width: 350px;
+  margin: 0 auto;
+  background: var(--card);
+  padding: 10px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(2,6,23,.6);
+}
+
+.music-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.music-btn {
+  background: var(--accent);
+  border: 0;
+  padding: 6px 8px;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  font-size: 12px;
+  min-width: 32px;
+  flex-shrink: 0;
+}
+
+.music-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.music-title {
+  font-weight: 600;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 12px;
+}
+
+.music-progress {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  color: var(--muted);
+}
+
+.progress-slider, .volume-slider {
+  appearance: none;
+  height: 2px;
+  border-radius: 1px;
+  background: rgba(255,255,255,0.2);
+  outline: none;
+  cursor: pointer;
+}
+
+.progress-slider {
+  flex: 1;
+  min-width: 60px;
+}
+
+.volume-slider {
+  width: 40px;
+  flex-shrink: 0;
+}
+
+.progress-slider::-webkit-slider-thumb, .volume-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+}
+
+.progress-slider::-moz-range-thumb, .volume-slider::-moz-range-thumb {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+  border: none;
+}
+
+.volume-control {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.volume-icon {
+  font-size: 10px;
+}
+
 .app{max-width:100%;margin:28px auto;padding:18px;display:grid;grid-template-rows:auto 1fr;gap:12px;overflow-x:hidden}
 header{display:flex;justify-content:center;align-items:flex-start;margin-bottom:12px;position:relative}
 header .stat{position:static;transform:none}

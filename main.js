@@ -135,7 +135,7 @@ const CREATURES = [
   {name:'Tifforny Pooterus',rarity:'OG',weight:0.00001,price:2500000000,income:2500000},
 ];
 
-let state = {currency:25,vault:[],conveyor:[],multiplier:1,discovered:[],ownedCounts:{},usedCodes:[],maxBrainrots:5,incomeMultiplier:1,luck:0};
+let state = {currency:25,vault:[],conveyor:[],multiplier:1,discovered:[],ownedCounts:{},usedCodes:[],maxBrainrots:5,incomeMultiplier:1,luck:0,stats:{totalMoneyMade:0,totalBrainrotsPurchased:0,totalBrainrotsSold:0,totalUpgradesPurchased:0}};
 
 // Rarity ranking helper (higher = rarer)
 const RARITY_RANK = {og:9, secret:8, 'Brainrot God':7, mythic:6, legendary:5, epic:4, rare:3, uncommon:2, common:1};
@@ -163,6 +163,8 @@ function loadState(){
   if(!state.maxBrainrots) state.maxBrainrots = 5;
   if(!state.incomeMultiplier) state.incomeMultiplier = 1;
   if(!state.luck) state.luck = 0;
+  // backfill stats if missing (older saves)
+  if(!state.stats) state.stats = {totalMoneyMade:0,totalBrainrotsPurchased:0,totalBrainrotsSold:0,totalUpgradesPurchased:0};
   // ensure ownedCounts exists and backfill from current vault if missing
   if(!state.ownedCounts) {
     state.ownedCounts = {};
@@ -272,6 +274,8 @@ function showOfflineModal(progress) {
   // Add event listener for claim button
   document.getElementById('claimOfflineReward').onclick = () => {
     state.currency += progress.income;
+    // Track offline income in total money made
+    state.stats.totalMoneyMade += progress.income;
     const modal = document.getElementById('offlineModal');
     if (modal) modal.remove();
     renderAll();
@@ -336,7 +340,7 @@ function renderSpawner(){
       if(state.currency<c.price) return;
       if(state.vault.length >= state.maxBrainrots) {
         showSellModal(
-          `You can only own ${state.maxBrainrots} Brainrots! Upgrade your Max Brainrots to own more.`,
+          `You can currently only own ${state.maxBrainrots} Brainrots! Upgrade your Max Brainrots to own more.`,
           'Max Brainrots Reached',
           false
         );
@@ -344,6 +348,8 @@ function renderSpawner(){
       }
       state.currency-=c.price;
       state.vault.push(c);
+      // Track brainrot purchase in stats
+      state.stats.totalBrainrotsPurchased += 1;
       // mark as discovered persistently
       if(!state.discovered.includes(c.name)) state.discovered.push(c.name);
       // increment historical owned count
@@ -381,10 +387,26 @@ function renderOwned(){
       const idx = state.vault.findIndex(v=>v===c || (v.name===c.name && v.price===c.price && v.income===c.income));
       if(idx > -1) state.vault.splice(idx,1);
       state.currency+=sell;
+      // Track brainrot sale in stats
+      state.stats.totalBrainrotsSold += 1;
+      // Track money made from sale
+      state.stats.totalMoneyMade += sell;
       renderAll();
       saveState();
     };
   });
+}
+
+function renderStats(){
+  const totalMoneyMadeEl = document.getElementById('totalMoneyMade');
+  const totalBrainrotsPurchasedEl = document.getElementById('totalBrainrotsPurchased');
+  const totalBrainrotsSoldEl = document.getElementById('totalBrainrotsSold');
+  const totalUpgradesPurchasedEl = document.getElementById('totalUpgradesPurchased');
+  
+  if(totalMoneyMadeEl) totalMoneyMadeEl.textContent = `$${fmt(state.stats.totalMoneyMade)}`;
+  if(totalBrainrotsPurchasedEl) totalBrainrotsPurchasedEl.textContent = fmt(state.stats.totalBrainrotsPurchased);
+  if(totalBrainrotsSoldEl) totalBrainrotsSoldEl.textContent = fmt(state.stats.totalBrainrotsSold);
+  if(totalUpgradesPurchasedEl) totalUpgradesPurchasedEl.textContent = fmt(state.stats.totalUpgradesPurchased);
 }
 
 function renderAll(){
@@ -395,6 +417,7 @@ function renderAll(){
   renderSpawner();
   renderOwned();
   renderUpgrades();
+  renderStats();
 }
 
 function spawnRandom(){state.conveyor=[];for(let i=0;i<10;i++){state.conveyor.push(pickWeighted(CREATURES));}renderAll();}
@@ -406,7 +429,9 @@ let countdownInterval = null;
 
 function tickCountdown(){
   refreshRemaining -= 1;
+  console.log('Countdown tick:', refreshRemaining);
   if(refreshRemaining <= 0){
+    console.log('Spawning new creatures');
     spawnRandom();
     refreshRemaining = REFRESH_INTERVAL;
   }
@@ -435,7 +460,14 @@ function startCountdown() {
 startCountdown();
 
 // Passive income interval
-setInterval(()=>{state.currency+=state.vault.reduce((s,c)=>s+c.income,0)*state.multiplier*state.incomeMultiplier/2;renderAll();saveState();},500);
+setInterval(()=>{
+  const income = state.vault.reduce((s,c)=>s+c.income,0)*state.multiplier*state.incomeMultiplier/2;
+  state.currency += income;
+  // Track total money made in stats
+  state.stats.totalMoneyMade += income;
+  renderAll();
+  saveState();
+},500);
 
 loadState();
 renderAll();
@@ -480,6 +512,13 @@ const modalHtml = `
       </ul>
       <div style="font-weight:700;margin-bottom:8px;color: #ffffffff">Version History:</div>
         <ul style="margin-left:20px">
+        <li>Version: 0.3 (The Getting Somewhere Update)</li>
+        <ul style="margin-left:20px">
+          <li>Added "Stats" that will track a variety of things for your game</li>
+          <li>Music player! Volume starts at 5%, click the name to change the song! (Currently 3 songs; credits below)</li>
+          <li>Added a background to make the game  look less "bland"</li>
+          <li>Even more UI polish</li>
+          </ul>
         <li>Version: 0.2.4</li>
         <ul style="margin-left:20px">
           <li>Collection will now sort ascending by income for Brainrots</li>
@@ -492,7 +531,7 @@ const modalHtml = `
           <li>Added offline progression (50% efficiency, max 8 hours)</li>
           <li>Changed location of codes button (so now they are SECRET codes)</li>
           <li>Added commas so that way income is easier to read</li>
-          <li>Fancy new title font! (Font credit - "Urban Shadow Sans Serif by Blankids")</li>
+          <li>Fancy new title font!</li>
           <li>More UI polish</li>
           </ul>
         <li>Version: 0.2.2</li>
@@ -548,8 +587,28 @@ const modalHtml = `
       <div style="font-weight:700;margin-bottom:8px;color: #ffffffff">Credits:</div>
       <ul style="margin-left:20px">
         <li>Developer: N7Soul, ChatGPT, Claude Sonnet 4</li>
+        <br>
         <li>Design: N7Soul, ChatGPT, Claude Sonnet 4</li>
+        <br>
+        <li>Font: Urban Shadow Sans Serif by Blankids</li>
+        <br>
+        <li>Music:</li>
+        <ul style="margin-left:20px">
+          <li>A Day in My Life - Dark Cat</li>
+          <li><a href="https://uppbeat.io/t/dark-cat/a-day-in-my-life" target="_blank" style="color:#16bfc5ff; text-decoration:underline;">https://uppbeat.io/t/dark-cat/a-day-in-my-life</a></li>
+          <li>License code: OCEUTV2FDNJSUCNG</li>
+          <br>
+          <li>Imaginatarium - Ian Aisling</li>
+          <li><a href="https://uppbeat.io/t/ian-aisling/imaginatarium" target="_blank" style="color:#16bfc5ff; text-decoration:underline;">https://uppbeat.io/t/ian-aisling/imaginatarium</a></li>
+          <li>License code: 5MJR674VYFOXMJZQ</li>
+          <br>
+          <li>The Cleaner - Night Drift</li>
+          <li><a href="https://uppbeat.io/t/night-drift/the-cleaner" target="_blank" style="color:#16bfc5ff; text-decoration:underline;">https://uppbeat.io/t/night-drift/the-cleaner</a></li>
+          <li>License code: 8F897RJMSBLPBMW9</li>
+          <br>
+        </ul>
         <li>Special Thanks: CoderSyntax - critiquing my code and making it better!</li>
+        <br>
         <li>Special Thanks: Friends doing beta testing and providing feedback for me <3</li>
       </ul>
     </div>
@@ -731,7 +790,7 @@ document.addEventListener('click', (e) => {
   if (target.closest && target.closest('#confirmReset')) {
     // clear save and reset in-memory state
     localStorage.removeItem('collector');
-    state = {currency:25,vault:[],conveyor:[],multiplier:1,discovered:[],ownedCounts:{},usedCodes:[],maxBrainrots:5,incomeMultiplier:1,luck:0};
+    state = {currency:25,vault:[],conveyor:[],multiplier:1,discovered:[],ownedCounts:{},usedCodes:[],maxBrainrots:5,incomeMultiplier:1,luck:0,stats:{totalMoneyMade:0,totalBrainrotsPurchased:0,totalBrainrotsSold:0,totalUpgradesPurchased:0}};
     saveState();
     spawnRandom();
     refreshRemaining = REFRESH_INTERVAL; // Reset the refresh timer
@@ -773,8 +832,14 @@ if(sellToggle && sellMenuWrapper && sellMenu){
     // Show confirmation for all sell options
     let message, title;
     if(rarity === 'all'){
-      message = 'Sell ALL owned Brainrots? This cannot be undone.';
-      title = 'Confirm Sell All';
+      const totalCount = state.vault.length;
+      if(totalCount === 1) {
+        message = 'Sell 1 owned brainrot? This cannot be undone.';
+        title = 'Sell Brainrot';
+      } else {
+        message = `Sell ${totalCount} owned brainrots? This cannot be undone.`;
+        title = 'Sell All Brainrots';
+      }
     } else {
       const count = state.vault.filter(v=>String(v.rarity||'').replace(/ /g, '-').toLowerCase() === String(rarity||'').toLowerCase()).length;
       if(count === 0) {
@@ -782,8 +847,9 @@ if(sellToggle && sellMenuWrapper && sellMenu){
         return;
       }
       const displayRarity = rarity.replace(/-/g, ' '); // Convert back for display
-      message = `Sell all ${count} ${displayRarity} Brainrots? This cannot be undone.`;
-      title = `Confirm Sell ${displayRarity}`;
+      const brainrotText = count === 1 ? 'brainrot' : 'brainrots';
+      message = `Are you sure you want to sell ${count === 1 ? 'the' : 'all'} ${count} ${displayRarity} ${brainrotText}? This cannot be undone.`;
+      title = `Sell ${displayRarity} ${brainrotText}`;
     }
     
     sellMenu.style.display='none'; // Close menu first
@@ -846,7 +912,7 @@ function showSellModal(message, title = 'Confirm', showCancel = true) {
   modal.classList.remove('hidden');
   
   // Add countdown timer for sell confirmations
-  if (showCancel && title.includes('Confirm Sell')) {
+  if (showCancel && (title.includes('Sell') && !title.includes('Max'))) {
     let countdown = 3;
     confirmBtn.disabled = true;
     confirmBtn.style.opacity = '0.5';
@@ -916,6 +982,8 @@ function upgradeMaxBrainrots() {
   if(state.currency >= price) {
     state.currency -= price;
     state.maxBrainrots += 1; // Increase by 1 each upgrade
+    // Track upgrade purchase in stats
+    state.stats.totalUpgradesPurchased += 1;
     renderUpgrades();
     renderAll();
     saveState();
@@ -932,6 +1000,8 @@ function upgradeLuck() {
   if(state.currency >= price) {
     state.currency -= price;
     state.luck += 1;
+    // Track upgrade purchase in stats
+    state.stats.totalUpgradesPurchased += 1;
     renderUpgrades();
     renderAll();
     saveState();
@@ -950,6 +1020,8 @@ function upgradeIncomeMultiplier() {
     state.currency -= price;
     state.incomeMultiplier += 0.1; // Increase by 10%
     state.incomeMultiplier = Math.round(state.incomeMultiplier * 10) / 10; // Fix floating point precision
+    // Track upgrade purchase in stats
+    state.stats.totalUpgradesPurchased += 1;
     renderUpgrades();
     renderAll();
     saveState();
@@ -1059,3 +1131,256 @@ function redeemCode() {
     messageEl.style.color = '#ef4444';
   }
 }
+
+// Music Player Functionality
+let currentAudio = null;
+let isPlaying = false;
+let currentSongIndex = 0;
+let playlist = [
+  'music/a-day-in-my-life-dark-cat.mp3',
+  'music/imaginatarium-ian-aisling.mp3',
+  'music/the-cleaner-night-drift.mp3'
+];
+
+// Custom song titles (cleaner display names)
+let songTitles = [
+  'A Day in My Life - Dark Cat',
+  'Imaginatarium - Ian Aisling', 
+  'The Cleaner - Night Drift'
+];
+
+function initMusicPlayer() {
+  console.log('Initializing music player...');
+  
+  const progressBar = document.getElementById('progressBar');
+  const volumeSlider = document.getElementById('volumeSlider');
+  const currentTimeEl = document.getElementById('currentTime');
+  const totalTimeEl = document.getElementById('totalTime');
+  const nowPlayingEl = document.getElementById('nowPlaying');
+
+  // Check if all required elements exist
+  if (!progressBar || !volumeSlider || !currentTimeEl || !totalTimeEl || !nowPlayingEl) {
+    console.error('Music player elements not found!', {
+      progressBar: !!progressBar,
+      volumeSlider: !!volumeSlider,
+      currentTimeEl: !!currentTimeEl,
+      totalTimeEl: !!totalTimeEl,
+      nowPlayingEl: !!nowPlayingEl
+    });
+    return;
+  }
+
+  console.log('All music player elements found, loading first song...');
+  
+  // Load first song automatically and start playing
+  loadMusicFromPath(playlist[currentSongIndex]);
+  
+  // Auto-play after a short delay to ensure audio is loaded
+  setTimeout(() => {
+    console.log('Attempting auto-play...', { currentAudio: !!currentAudio });
+    if (currentAudio) {
+      playMusic();
+    }
+  }, 1000); // Increased delay to 1 second
+
+  // Create hidden file input for music selection (keep existing functionality)
+  const fileInput = document.createElement('input');
+  fileInput.type = 'file';
+  fileInput.accept = 'audio/*';
+  fileInput.style.display = 'none';
+  document.body.appendChild(fileInput);
+
+  // Click music title to select new music or cycle through playlist
+  nowPlayingEl.addEventListener('click', () => {
+    const wasPlaying = isPlaying; // Remember if music was playing
+    // Cycle to next song in playlist
+    currentSongIndex = (currentSongIndex + 1) % playlist.length;
+    loadMusicFromPath(playlist[currentSongIndex]);
+    
+    // If music was playing, continue playing the new song
+    if (wasPlaying) {
+      // Add a small delay to ensure the new song is loaded
+      setTimeout(() => {
+        playMusic();
+      }, 100);
+    }
+  });
+  nowPlayingEl.style.cursor = 'pointer';
+  nowPlayingEl.title = 'Click to cycle through songs';
+
+  // Handle file selection (keep existing functionality)
+  fileInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      loadMusic(file);
+    }
+  });
+
+  // Progress bar
+  progressBar.addEventListener('input', () => {
+    if (currentAudio) {
+      const time = (progressBar.value / 100) * currentAudio.duration;
+      currentAudio.currentTime = time;
+    }
+  });
+
+  // Volume slider
+  volumeSlider.addEventListener('input', () => {
+    if (currentAudio) {
+      currentAudio.volume = volumeSlider.value / 100;
+    }
+  });
+}
+
+function loadMusic(file) {
+  if (currentAudio) {
+    currentAudio.pause();
+    currentAudio = null;
+  }
+
+  currentAudio = new Audio(URL.createObjectURL(file));
+  currentAudio.volume = 0.05; // Start at 5% volume
+  
+  document.getElementById('nowPlaying').textContent = file.name.replace(/\.[^/.]+$/, ""); // Remove file extension
+  
+  currentAudio.addEventListener('loadedmetadata', () => {
+    document.getElementById('totalTime').textContent = formatTime(currentAudio.duration);
+  });
+
+  currentAudio.addEventListener('timeupdate', () => {
+    const progress = (currentAudio.currentTime / currentAudio.duration) * 100;
+    document.getElementById('progressBar').value = progress || 0;
+    document.getElementById('currentTime').textContent = formatTime(currentAudio.currentTime);
+  });
+
+  currentAudio.addEventListener('ended', () => {
+    // Auto-advance to next song in playlist
+    currentSongIndex = (currentSongIndex + 1) % playlist.length;
+    loadMusicFromPath(playlist[currentSongIndex]);
+    if (isPlaying) {
+      playMusic(); // Continue playing if music was playing
+    }
+  });
+}
+
+// New function to load music from file path
+function loadMusicFromPath(musicPath) {
+  console.log('Loading music from path:', musicPath);
+  
+  if (currentAudio) {
+    currentAudio.pause();
+    currentAudio = null;
+  }
+
+  currentAudio = new Audio(musicPath);
+  
+  // Set volume from slider value
+  const volumeSlider = document.getElementById('volumeSlider');
+  if (volumeSlider) {
+    currentAudio.volume = volumeSlider.value / 100;
+  } else {
+    currentAudio.volume = 0.05; // Default to 5% if slider not found
+  }
+  
+  // Use custom song title instead of extracting from filename
+  const songName = songTitles[currentSongIndex] || musicPath.split('/').pop().replace(/\.[^/.]+$/, "").replace(/-/g, ' ');
+  console.log('Setting song name:', songName);
+  
+  const nowPlayingEl = document.getElementById('nowPlaying');
+  if (nowPlayingEl) {
+    nowPlayingEl.textContent = songName;
+  } else {
+    console.error('nowPlaying element not found!');
+  }
+  
+  currentAudio.addEventListener('loadedmetadata', () => {
+    console.log('Audio metadata loaded, duration:', currentAudio.duration);
+    const totalTimeEl = document.getElementById('totalTime');
+    if (totalTimeEl) {
+      totalTimeEl.textContent = formatTime(currentAudio.duration);
+    }
+  });
+
+  currentAudio.addEventListener('timeupdate', () => {
+    const progress = (currentAudio.currentTime / currentAudio.duration) * 100;
+    const progressBar = document.getElementById('progressBar');
+    const currentTimeEl = document.getElementById('currentTime');
+    
+    if (progressBar) progressBar.value = progress || 0;
+    if (currentTimeEl) currentTimeEl.textContent = formatTime(currentAudio.currentTime);
+  });
+
+  currentAudio.addEventListener('ended', () => {
+    console.log('Song ended, advancing to next song');
+    // Auto-advance to next song in playlist
+    currentSongIndex = (currentSongIndex + 1) % playlist.length;
+    loadMusicFromPath(playlist[currentSongIndex]);
+    if (isPlaying) {
+      playMusic(); // Continue playing if music was playing
+    }
+  });
+
+  currentAudio.addEventListener('error', (e) => {
+    console.error('Error loading audio:', musicPath, e);
+    const nowPlayingEl = document.getElementById('nowPlaying');
+    if (nowPlayingEl) {
+      nowPlayingEl.textContent = 'Error loading song';
+    }
+  });
+
+  currentAudio.addEventListener('canplaythrough', () => {
+    console.log('Audio can play through');
+  });
+}
+
+function playMusic() {
+  console.log('playMusic called', { currentAudio: !!currentAudio, isPlaying });
+  if (currentAudio) {
+    currentAudio.play().then(() => {
+      console.log('Music started playing successfully');
+      isPlaying = true;
+    }).catch(error => {
+      console.log('Auto-play prevented:', error);
+      // If auto-play fails, we'll try again on first user interaction
+    });
+  } else {
+    console.log('No currentAudio available');
+  }
+}
+
+function pauseMusic() {
+  if (currentAudio) {
+    currentAudio.pause();
+    isPlaying = false;
+  }
+}
+
+// Auto-play handler for browser policies
+let autoPlayAttempted = false;
+function enableAutoPlay() {
+  console.log('enableAutoPlay called', { autoPlayAttempted, currentAudio: !!currentAudio, isPlaying });
+  if (!autoPlayAttempted && currentAudio && !isPlaying) {
+    autoPlayAttempted = true;
+    console.log('Attempting to enable auto-play after user interaction');
+    playMusic();
+    // Remove the event listener after first successful play
+    document.removeEventListener('click', enableAutoPlay);
+    document.removeEventListener('keydown', enableAutoPlay);
+  }
+}
+
+function formatTime(seconds) {
+  if (isNaN(seconds)) return '0:00';
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+  return `${mins}:${secs.toString().padStart(2, '0')}`;
+}
+
+// Initialize music player when page loads
+document.addEventListener('DOMContentLoaded', () => {
+  initMusicPlayer();
+  
+  // Add event listeners for first user interaction to enable auto-play
+  document.addEventListener('click', enableAutoPlay);
+  document.addEventListener('keydown', enableAutoPlay);
+});
