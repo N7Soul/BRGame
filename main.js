@@ -29,9 +29,9 @@ const CREATURES = [
   {name:'Ti Ti Ti Sahur',rarity:'Epic',weight:5.5,price:37500,income:225},
   {name:'Avocadini Guffo',rarity:'Epic',weight:5,price:35000,income:225},
   {name:'Salamino Penguino',rarity:'Epic',weight:4.5,price:40000,income:250},
-  {name:'Penguino Cocosino',rarity:'Epic',weight:4,price:45000,income:275},
+  {name:'Penguino Cocosino',rarity:'Epic',weight:4,price:42500,income:275},
   // Legendary
-  {name:'Burbaloni Loliloli',rarity:'Legendary',weight:2.5,price:35000,income:300},
+  {name:'Burbaloni Loliloli',rarity:'Legendary',weight:2.5,price:45000,income:300},
   {name:'Chimpazini Bananini',rarity:'Legendary',weight:2.2,price:50000,income:400},
   {name:'Ballerina Cappuccina',rarity:'Legendary',weight:2,price:100000,income:500},
   {name:'Chef Crabracadabra',rarity:'Legendary',weight:1.8,price:150000,income:600},
@@ -323,6 +323,54 @@ function getLuckEffect(rarity, luckLevel) {
   return Math.max(0.1, effect); // Prevent weights from going too low
 }
 
+// Function to spawn a random creature of a specific rarity
+function pickByRarity(targetRarity) {
+  // Filter creatures by the target rarity
+  const creaturesOfRarity = CREATURES.filter(creature => 
+    creature.rarity.toLowerCase() === targetRarity.toLowerCase()
+  );
+  
+  if (creaturesOfRarity.length === 0) {
+    console.warn(`No creatures found for rarity: ${targetRarity}`);
+    return null;
+  }
+  
+  // Pick a random creature from the filtered list
+  const randomIndex = Math.floor(Math.random() * creaturesOfRarity.length);
+  return {...creaturesOfRarity[randomIndex]};
+}
+
+// Function to spawn a random creature of specific rarity with weighted selection within that rarity
+function pickByRarityWeighted(targetRarity) {
+  // Filter creatures by the target rarity
+  const creaturesOfRarity = CREATURES.filter(creature => 
+    creature.rarity.toLowerCase() === targetRarity.toLowerCase()
+  );
+  
+  if (creaturesOfRarity.length === 0) {
+    console.warn(`No creatures found for rarity: ${targetRarity}`);
+    return null;
+  }
+  
+  // Apply luck effects to the filtered list
+  const modifiedList = creaturesOfRarity.map(creature => {
+    const luckEffect = getLuckEffect(creature.rarity, state.luck);
+    return {
+      ...creature,
+      weight: Math.max(0.001, creature.weight * luckEffect)
+    };
+  });
+  
+  // Use weighted selection within the rarity
+  const total = modifiedList.reduce((s,c) => s + c.weight, 0);
+  let r = Math.random() * total;
+  for(const c of modifiedList) {
+    r -= c.weight;
+    if(r <= 0) return {...c};
+  }
+  return {...modifiedList[modifiedList.length-1]};
+}
+
 const currencyEl=document.getElementById('currency');
 const spawnListEl=document.getElementById('spawnList');
 const ownedEl=document.getElementById('owned');
@@ -465,7 +513,10 @@ setInterval(()=>{
   state.currency += income;
   // Track total money made in stats
   state.stats.totalMoneyMade += income;
-  renderAll();
+  
+  // Only update currency display and stats, don't recreate all DOM elements
+  currencyEl.textContent=`$${fmt(state.currency)}`;
+  renderStats();
   saveState();
 },500);
 
@@ -512,6 +563,15 @@ const modalHtml = `
       </ul>
       <div style="font-weight:700;margin-bottom:8px;color: #ffffffff">Version History:</div>
         <ul style="margin-left:20px">
+        <li>Version: 0.3.1</li>
+        <ul style="margin-left:20px">
+          <li>Added counter so you know how many Luck/Income upgrades you've purchased</li>
+          <li>Added new secret codes</li>
+          <li>Minor god price adjustments</li>
+          <li>Luck upgrade price/progression tweaked</li>
+          <li>Fixed issue where sometimes you had to click multiple times to buy/sell</li>
+          <li>Fixed secret codes so now Enter key will redeem as well</li>
+          </ul>
         <li>Version: 0.3 (The Getting Somewhere Update)</li>
         <ul style="margin-left:20px">
           <li>Added "Stats" that will track a variety of things for your game</li>
@@ -740,7 +800,14 @@ document.addEventListener('click', (e) => {
       if (aboutModal) aboutModal.classList.add('hidden');
     }
     const m = document.getElementById('codeModal'); if (m) m.classList.remove('hidden');
-    document.getElementById('codeInput').focus();
+    const codeInputField = document.getElementById('codeInput');
+    if (codeInputField) {
+      codeInputField.focus();
+      // Remove any existing Enter key listeners to prevent duplicates
+      codeInputField.removeEventListener('keypress', handleCodeInputEnter);
+      // Add Enter key listener for code redemption
+      codeInputField.addEventListener('keypress', handleCodeInputEnter);
+    }
     return;
   }
   // Open about modal
@@ -991,8 +1058,8 @@ function upgradeMaxBrainrots() {
 }
 
 function getLuckPrice() {
-  // Start at $1,000,000, increase by 5x each level
-  return Math.floor(1000000 * Math.pow(5, state.luck));
+  // Start at $750,000, increase by 3x each level
+  return Math.floor(750000 * Math.pow(3, state.luck));
 }
 
 function upgradeLuck() {
@@ -1051,6 +1118,10 @@ function renderUpgrades() {
     luckBtn.textContent = `$${fmt(luckPrice)}`;
     luckBtn.style.opacity = canAffordLuck ? '1' : '0.5';
     luckBtn.style.cursor = canAffordLuck ? 'pointer' : 'not-allowed';
+    
+    // Update luck counter
+    const luckCounter = document.getElementById('luckCounter');
+    if (luckCounter) luckCounter.textContent = state.luck;
   }
   
   // Income Multiplier upgrade
@@ -1061,6 +1132,21 @@ function renderUpgrades() {
     incomeMultiplierBtn.textContent = `$${fmt(incomePrice)}`;
     incomeMultiplierBtn.style.opacity = canAffordIncome ? '1' : '0.5';
     incomeMultiplierBtn.style.cursor = canAffordIncome ? 'pointer' : 'not-allowed';
+    
+    // Update income multiplier counter
+    const incomeMultiplierCounter = document.getElementById('incomeMultiplierCounter');
+    if (incomeMultiplierCounter) {
+      const level = Math.round((state.incomeMultiplier - 1) / 0.1);
+      incomeMultiplierCounter.textContent = level;
+    }
+  }
+}
+
+// Enter key handler for code input
+function handleCodeInputEnter(event) {
+  if (event.key === 'Enter') {
+    event.preventDefault();
+    redeemCode();
   }
 }
 
@@ -1097,8 +1183,11 @@ function redeemCode() {
     'JORDONIA': { type: 'creature', creature: 'Jordonia Verizonia', description: 'OG Brainrot!' },
     'SNACKS': { type: 'creature', creature: 'Nikkito Parverino', description: 'OG Brainrot!' },
     'HOWHEKEEPGETTINGSTANK': { type: 'creature', creature: 'Tifforny Pooterus', description: 'OG Brainrot!' },
-    'GODTESTER': { type: 'creature', creature: 'Odin Din Din Dun', description: 'Ultimate Brainrot!' }
+    'RNDMBRAINROT': { type: 'creature', creature: pickByRarity('Brainrot God')?.name || 'Odin Din Din Dun', description: 'Random Brainrot God!' },
+    'RNDMSECRET': { type: 'creature', creature: pickByRarity('Secret')?.name || 'Las Sis', description: 'Random Secret!' }
+
     // Add more codes as needed
+    
   };
   
   if (codes[code]) {
