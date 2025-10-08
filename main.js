@@ -135,7 +135,115 @@ const CREATURES = [
   {name:'Tifforny Pooterus',rarity:'OG',weight:0.00001,price:2500000000,income:2500000},
 ];
 
-let state = {currency:25,vault:[],conveyor:[],multiplier:1,discovered:[],ownedCounts:{},usedCodes:[],maxBrainrots:5,incomeMultiplier:1,luck:0,stats:{totalMoneyMade:0,totalBrainrotsPurchased:0,totalBrainrotsSold:0,totalUpgradesPurchased:0}};
+// Achievements definition
+const ACHIEVEMENTS = [
+  {
+    id: 'common_collector',
+    name: 'Commonini Collector',
+    description: 'Collect all common brainrots',
+    checkFunction: () => {
+      const commonCreatures = CREATURES.filter(c => c.rarity === 'Common');
+      return commonCreatures.every(creature => state.discovered.includes(creature.name));
+    }
+  },
+  {
+    id: 'rare_collector',
+    name: 'Rareini Collector',
+    description: 'Collect all Rare brainrots',
+    checkFunction: () => {
+      const rareCreatures = CREATURES.filter(c => c.rarity === 'Rare');
+      return rareCreatures.every(creature => state.discovered.includes(creature.name));
+    }
+  },
+   {
+    id: 'epic_collector',
+    name: 'Epicini Collector',
+    description: 'Collect all Epic brainrots',
+    checkFunction: () => {
+      const epicCreatures = CREATURES.filter(c => c.rarity === 'Epic');
+      return epicCreatures.every(creature => state.discovered.includes(creature.name));
+    }
+  },
+   {
+    id: 'legendary_collector',
+    name: 'Legendaryini Collector',
+    description: 'Collect all Legendary brainrots',
+    checkFunction: () => {
+      const legendaryCreatures = CREATURES.filter(c => c.rarity === 'Legendary');
+      return legendaryCreatures.every(creature => state.discovered.includes(creature.name));
+    }
+  },
+   {
+    id: 'mythic_collector',
+    name: 'Mythicini Collector',
+    description: 'Collect all Mythic brainrots',
+    checkFunction: () => {
+      const mythicCreatures = CREATURES.filter(c => c.rarity === 'Mythic');
+      return mythicCreatures.every(creature => state.discovered.includes(creature.name));
+    }
+  },
+   {
+    id: 'godly_collector',
+    name: 'Godlini Collector',
+    description: 'Collect all Brainrot Gods',
+    checkFunction: () => {
+      const brainrotgodCreatures = CREATURES.filter(c => c.rarity === 'Brainrot God');
+      return brainrotgodCreatures.every(creature => state.discovered.includes(creature.name));
+    }
+  },
+  {
+    id: 'secret_collector',
+    name: 'Secretini Collectorini',
+    description: 'Wait, how did you do that?',
+    checkFunction: () => {
+      const secretCreatures = CREATURES.filter(c => c.rarity === 'Secret');
+      return secretCreatures.every(creature => state.discovered.includes(creature.name));
+    }
+  },
+  {
+    id: 'og_collector',
+    name: 'OG Collectorini',
+    description: 'You HAVE to be cheating...',
+    checkFunction: () => {
+      const ogCreatures = CREATURES.filter(c => c.rarity === 'OG');
+      return ogCreatures.every(creature => state.discovered.includes(creature.name));
+    }
+  },
+  {
+    id: 'millionaire',
+    name: 'Millionairini',
+    description: 'Generate a total of 1 Million monini',
+    checkFunction: () => {
+      return state.stats.totalMoneyMade >= 1000000;
+    }
+  },
+  {
+    id: 'billionaire',
+    name: 'Billionairini',
+    description: 'Generate a total of 1 Billion monini',
+    checkFunction: () => {
+      return state.stats.totalMoneyMade >= 1000000000;
+    }
+  },
+  {
+    id: 'trillionaire',
+    name: 'Trillionairini',
+    description: 'Generate a total of 1 Trillion monini',
+    checkFunction: () => {
+      return state.stats.totalMoneyMade >= 1000000000000;
+    }
+  },
+  {
+    id: 'secret_code_button_found',
+    name: 'Time to cheat!',
+    description: 'You found the secret code button!',
+    checkFunction: () => {
+      return state.secretCodeButtonClicked === true;
+    }
+  }
+];
+
+let state = {currency:25,vault:[],conveyor:[],multiplier:1,discovered:[],ownedCounts:{},usedCodes:[],maxBrainrots:5,incomeMultiplier:1,luck:0,stats:{totalMoneyMade:0,totalBrainrotsPurchased:0,totalBrainrotsSold:0,totalUpgradesPurchased:0},achievements:[],secretCodeButtonClicked:false};
 
 // Rarity ranking helper (higher = rarer)
 const RARITY_RANK = {og:9, secret:8, 'Brainrot God':7, mythic:6, legendary:5, epic:4, rare:3, uncommon:2, common:1};
@@ -165,6 +273,10 @@ function loadState(){
   if(!state.luck) state.luck = 0;
   // backfill stats if missing (older saves)
   if(!state.stats) state.stats = {totalMoneyMade:0,totalBrainrotsPurchased:0,totalBrainrotsSold:0,totalUpgradesPurchased:0};
+  // backfill achievements if missing (older saves)
+  if(!state.achievements) state.achievements = [];
+  // backfill secretCodeButtonClicked if missing (older saves)
+  if(state.secretCodeButtonClicked === undefined) state.secretCodeButtonClicked = false;
   // ensure ownedCounts exists and backfill from current vault if missing
   if(!state.ownedCounts) {
     state.ownedCounts = {};
@@ -276,6 +388,7 @@ function showOfflineModal(progress) {
     state.currency += progress.income;
     // Track offline income in total money made
     state.stats.totalMoneyMade += progress.income;
+    checkAchievements(); // Check for achievements after offline income
     const modal = document.getElementById('offlineModal');
     if (modal) modal.remove();
     renderAll();
@@ -404,6 +517,7 @@ function renderSpawner(){
       state.ownedCounts[c.name] = (state.ownedCounts[c.name]||0) + 1;
       const index = state.conveyor.indexOf(c);
       if(index > -1) state.conveyor.splice(index,1);
+      checkAchievements(); // Check for achievements after discovery
       renderAll();
       saveState();
     };
@@ -439,6 +553,7 @@ function renderOwned(){
       state.stats.totalBrainrotsSold += 1;
       // Track money made from sale
       state.stats.totalMoneyMade += sell;
+      checkAchievements(); // Check for achievements after selling
       renderAll();
       saveState();
     };
@@ -455,6 +570,124 @@ function renderStats(){
   if(totalBrainrotsPurchasedEl) totalBrainrotsPurchasedEl.textContent = fmt(state.stats.totalBrainrotsPurchased);
   if(totalBrainrotsSoldEl) totalBrainrotsSoldEl.textContent = fmt(state.stats.totalBrainrotsSold);
   if(totalUpgradesPurchasedEl) totalUpgradesPurchasedEl.textContent = fmt(state.stats.totalUpgradesPurchased);
+}
+
+function renderAchievements(){
+  const el = document.getElementById('achievementsList');
+  if(!el) return;
+  
+  // Check and unlock any new achievements
+  checkAchievements();
+  
+  // Clear the container
+  el.innerHTML = '';
+  
+  // Add summary
+  const unlockedCount = state.achievements.length;
+  const totalCount = ACHIEVEMENTS.length;
+  const summaryEl = document.createElement('div');
+  summaryEl.style.textAlign = 'center';
+  summaryEl.style.marginBottom = '20px';
+  summaryEl.style.padding = '12px';
+  summaryEl.style.background = 'rgba(255, 255, 255, 0.05)';
+  summaryEl.style.borderRadius = '8px';
+  summaryEl.innerHTML = `<div style="color: #10b981;">${unlockedCount} / ${totalCount} Unlocked</div>`;
+  el.appendChild(summaryEl);
+  
+  // Create a table-like structure with CSS Grid (3 columns: Name, Description, Achieved)
+  const gridContainer = document.createElement('div');
+  gridContainer.style.display = 'grid';
+  gridContainer.style.gridTemplateColumns = '1fr 2fr auto';
+  gridContainer.style.gap = '8px 12px';
+  gridContainer.style.alignItems = 'center';
+  
+  // Add headers
+  const headers = ['Name', 'Description', 'Achieved'];
+  headers.forEach((header, index) => {
+    const headerEl = document.createElement('div');
+    headerEl.textContent = header;
+    headerEl.style.fontWeight = '700';
+    headerEl.style.padding = '8px 6px';
+    headerEl.style.borderBottom = '1px solid rgba(255, 255, 255, 0.1)';
+    if (index === 2) headerEl.style.textAlign = 'center';
+    gridContainer.appendChild(headerEl);
+  });
+  
+  // Add achievement rows
+  ACHIEVEMENTS.forEach(achievement => {
+    const isAchieved = state.achievements.includes(achievement.id);
+    
+    // Name column
+    const nameEl = document.createElement('div');
+    nameEl.textContent = achievement.name;
+    nameEl.style.padding = '6px';
+    nameEl.style.fontWeight = isAchieved ? '600' : '400';
+    nameEl.style.color = isAchieved ? '#10b981' : 'inherit';
+    gridContainer.appendChild(nameEl);
+    
+    // Description column
+    const descEl = document.createElement('div');
+    descEl.textContent = achievement.description;
+    descEl.style.padding = '6px';
+    descEl.className = 'muted';
+    gridContainer.appendChild(descEl);
+    
+    // Achieved column
+    const achievedEl = document.createElement('div');
+    achievedEl.textContent = isAchieved ? '✓' : '✗';
+    achievedEl.style.padding = '6px';
+    achievedEl.style.textAlign = 'center';
+    achievedEl.style.fontSize = '18px';
+    achievedEl.style.color = isAchieved ? '#10b981' : '#ef4444';
+    gridContainer.appendChild(achievedEl);
+  });
+  
+  el.appendChild(gridContainer);
+}
+
+// Function to show achievement notification
+function showAchievementNotification(achievement) {
+  // Create notification element
+  const notification = document.createElement('div');
+  notification.className = 'achievement-notification';
+  notification.innerHTML = `
+    <div class="achievement-notification-title">
+      <span class="achievement-icon">🏆</span>
+      Achievement Unlocked!
+    </div>
+    <div class="achievement-notification-name">${achievement.name}</div>
+    <div class="achievement-notification-desc">${achievement.description}</div>
+  `;
+  
+  // Add to page
+  document.body.appendChild(notification);
+  
+  // Trigger show animation after a brief delay
+  setTimeout(() => {
+    notification.classList.add('show');
+  }, 100);
+  
+  // Remove after 3 seconds
+  setTimeout(() => {
+    notification.classList.remove('show');
+    setTimeout(() => {
+      if (notification.parentNode) {
+        notification.parentNode.removeChild(notification);
+      }
+    }, 300); // Wait for slide-out animation
+  }, 3000);
+}
+
+// Function to check and unlock achievements
+function checkAchievements() {
+  ACHIEVEMENTS.forEach(achievement => {
+    if (!state.achievements.includes(achievement.id) && achievement.checkFunction()) {
+      state.achievements.push(achievement.id);
+      // Show notification for newly unlocked achievement
+      showAchievementNotification(achievement);
+      console.log(`Achievement unlocked: ${achievement.name}`);
+    }
+  });
 }
 
 function renderAll(){
@@ -513,6 +746,7 @@ setInterval(()=>{
   state.currency += income;
   // Track total money made in stats
   state.stats.totalMoneyMade += income;
+  checkAchievements(); // Check for achievements after earning money
   
   // Only update currency display and stats, don't recreate all DOM elements
   currencyEl.textContent=`$${fmt(state.currency)}`;
@@ -549,20 +783,26 @@ const modalHtml = `
   <div class="modal-box-about" style="max-height:80vh;overflow-y:auto;position:relative">
     <!-- Hidden button in top right of modal -->
     <div id="aboutSecretBtn" style="position:absolute;top:10px;right:10px;width:20px;height:20px;cursor:pointer;opacity:0;"></div>
-    <div style="font-weight:700;margin-bottom:8px">About Brainrotini Gamini</div>
-    <div style="font-weight:700;margin-bottom:8px;color: #16bfc5ff">(email dcrider2003@gmail.com with title "BRGame Bug" for support)</div>
+    <div style="font-weight:700;margin-bottom:8px;text-align: center;text-decoration: underline">About Brainrotini Gamini</div>
+    <div style="font-weight:700;margin-bottom:8px;color: #16bfc5ff;text-align: center">(email dcrider2003@gmail.com with title "BRGame Bug" for support)</div>
     <div style="color:var(--muted);margin-bottom:16px">
       <p>Welcome to Brainrotini Gamini! Collect brainrots and make the most money!</p>
       <p>Each brainrot generates Monini over time. Discover rare creatures and build your collection!</p>
       <p><em>**This game is very WIP and under development by me (with little coding experience) and AI, so I'm doing my best!**</em></p>
-      <div style="font-weight:700;margin-bottom:8px;color: #ffffffff">Features:</div>
+      <div style="font-weight:700;margin-bottom:8px;color: #ffffffff;text-decoration: underline;text-align: center">Features</div>
       <ul style="margin-left:20px">
         <li>100+ unique Brainrot characters</li>
         <li>9 rarity tiers from Common to OG</li>
         <li>Become the greatest Brainrot collector on the planet!</li>
       </ul>
-      <div style="font-weight:700;margin-bottom:8px;color: #ffffffff">Version History:</div>
+      <div style="font-weight:700;margin-bottom:8px;color: #ffffffff;text-decoration: underline;text-align: center">Version History</div>
         <ul style="margin-left:20px">
+        <li>Version: 0.4 (The Achievements Update)</li>
+        <ul style="margin-left:20px">
+          <li>Added achievements! You'll get a popup in the corner when you get one! (currently 12, more to come)</li>
+          <li>Music will now start at 0%, can change the volume at will</li>
+          <li>More UI polish and refinement</li>
+          </ul>
         <li>Version: 0.3.1</li>
         <ul style="margin-left:20px">
           <li>Added counter so you know how many Luck/Income upgrades you've purchased</li>
@@ -644,13 +884,26 @@ const modalHtml = `
         </ul>
         <li>Initial Release: 0.1.0</li>
       </ul>
-      <div style="font-weight:700;margin-bottom:8px;color: #ffffffff">Credits:</div>
+      <div style="font-weight:700;margin-bottom:8px;color: #ffffffff;text-decoration: underline;text-align: center">Credits</div>
       <ul style="margin-left:20px">
-        <li>Developer: N7Soul, ChatGPT, Claude Sonnet 4</li>
+        <li>Developer:</li>
+        <ul style="margin-left:20px">
+          <li>N7Soul</li>
+          <li>AI Assistance: ChatGPT, Claude Sonnet 4</li>
+        </ul>
         <br>
-        <li>Design: N7Soul, ChatGPT, Claude Sonnet 4</li>
+        <li>Design:</li>
+        <ul style="margin-left:20px">
+          <li>N7Soul</li>
+          <li>AI Assistance: ChatGPT, Claude Sonnet 4</li>
+          <li>Background image by ChatGPT</li>
+        </ul>
         <br>
-        <li>Font: Urban Shadow Sans Serif by Blankids</li>
+        <li>Font:</li>
+        <ul style="margin-left:20px">
+          <li>Arial</li>
+          <li>Urban Shadow Sans Serif by Blankids</li>
+        </ul>
         <br>
         <li>Music:</li>
         <ul style="margin-left:20px">
@@ -667,10 +920,11 @@ const modalHtml = `
           <li>License code: 8F897RJMSBLPBMW9</li>
           <br>
         </ul>
-        <li>Special Thanks: CoderSyntax - critiquing my code and making it better!</li>
-        <br>
-        <li>Special Thanks: Friends doing beta testing and providing feedback for me <3</li>
-      </ul>
+        <li>Special Thanks:
+          <ul style="margin-left:20px">
+            <li><span style="font-weight: bold; color: white">CoderSyntax</span> for critiquing my code and making it better!</li>
+            <li><span style="font-weight: bold; color: white">Friends</span> doing beta testing and providing feedback for me <3</li>
+          </ul>
     </div>
     <div class="modal-actions">
       <button id="closeAbout" class="small">Close</button>
@@ -705,8 +959,8 @@ document.body.insertAdjacentHTML('beforeend', modalHtml);
 const collectionHtml = `
 <div id="collectionModal" class="modal-overlay hidden">
   <div class="modal-box-collection">
-    <div style="font-weight:700;margin-bottom:8px">Collection</div>
-    <div style="color:var(--muted);margin-bottom:8px">Your discovered Brainrots</div>
+    <div style="font-weight: 700;margin-bottom: 8px;text-align: center">Collection</div>
+    <div style="color:var(--muted);margin-bottom:8px;text-align: center">Your discovered Brainrots</div>
     <div id="collectionGrid" style="max-height:360px;overflow:auto;display:grid;grid-template-columns:6px 1fr 110px 90px 64px;row-gap:8px;padding-right:6px">
       <!-- header cells will be rendered by renderCollection -->
     </div>
@@ -728,8 +982,21 @@ const sellModalHtml = `
   </div>
 </div>`;
 
+const achievementsHtml = `
+<div id="achievementsModal" class="modal-overlay hidden">
+  <div class="modal-box-achievements" style="max-height:80vh;overflow-y:auto;position:relative">
+   <div style="max-height:80vh;overflow-y:auto;position:relative">
+    <div style="font-weight:700;margin-bottom:8px;text-align:center">Achievements</div>
+    <div id="achievementsList" style="max-height:calc(80vh - 100px);overflow-y:auto;"></div>
+    <div class="modal-actions">
+      <button id="closeAchievements" class="small">Close</button>
+    </div>
+  </div>
+</div>`;
+
 document.body.insertAdjacentHTML('beforeend', collectionHtml);
 document.body.insertAdjacentHTML('beforeend', sellModalHtml);
+document.body.insertAdjacentHTML('beforeend', achievementsHtml);
 
 // Build the collection list: show '???' for unowned, reveal name once owned.
 function renderCollection(){
@@ -794,6 +1061,13 @@ document.addEventListener('click', (e) => {
   const target = e.target;
   // Open code modal when secret buttons are clicked
   if (target.closest && (target.closest('#secretCodeBtn') || target.closest('#aboutSecretBtn'))) {
+    // Trigger achievement for finding the secret code button
+    if (!state.secretCodeButtonClicked) {
+      state.secretCodeButtonClicked = true;
+      checkAchievements(); // This will now unlock the achievement
+      saveState();
+    }
+    
     // If clicked from about modal, close it first
     if (target.closest('#aboutSecretBtn')) {
       const aboutModal = document.getElementById('aboutModal'); 
@@ -826,6 +1100,11 @@ document.addEventListener('click', (e) => {
     const m = document.getElementById('collectionModal'); if (m) { renderCollection(); m.classList.remove('hidden'); }
     return;
   }
+  //Open achievements modal
+  if (target.closest && target.closest('#achievementsBtn')) {
+    const m = document.getElementById('achievementsModal'); if (m) { renderAchievements(); m.classList.remove('hidden'); }
+    return;
+  }
   // Close about modal
   if (target.closest && target.closest('#closeAbout')) {
     const m = document.getElementById('aboutModal'); if (m) m.classList.add('hidden');
@@ -839,6 +1118,11 @@ document.addEventListener('click', (e) => {
   // Close collection modal
   if (target.closest && target.closest('#closeCollection')) {
     const m = document.getElementById('collectionModal'); if (m) m.classList.add('hidden');
+    return;
+  }
+  // Close achievements modal
+  if (target.closest && target.closest('#closeAchievements')) {
+    const m = document.getElementById('achievementsModal'); if (m) m.classList.add('hidden');
     return;
   }
   // Close code modal
@@ -857,7 +1141,7 @@ document.addEventListener('click', (e) => {
   if (target.closest && target.closest('#confirmReset')) {
     // clear save and reset in-memory state
     localStorage.removeItem('collector');
-    state = {currency:25,vault:[],conveyor:[],multiplier:1,discovered:[],ownedCounts:{},usedCodes:[],maxBrainrots:5,incomeMultiplier:1,luck:0,stats:{totalMoneyMade:0,totalBrainrotsPurchased:0,totalBrainrotsSold:0,totalUpgradesPurchased:0}};
+    state = {currency:25,vault:[],conveyor:[],multiplier:1,discovered:[],ownedCounts:{},usedCodes:[],maxBrainrots:5,incomeMultiplier:1,luck:0,stats:{totalMoneyMade:0,totalBrainrotsPurchased:0,totalBrainrotsSold:0,totalUpgradesPurchased:0},achievements:[],secretCodeButtonClicked:false};
     saveState();
     spawnRandom();
     refreshRemaining = REFRESH_INTERVAL; // Reset the refresh timer
@@ -1203,6 +1487,7 @@ function redeemCode() {
         state.vault.push({...creature});
         if (!state.discovered.includes(creature.name)) state.discovered.push(creature.name);
         state.ownedCounts[creature.name] = (state.ownedCounts[creature.name] || 0) + 1;
+        checkAchievements(); // Check for achievements after code redemption
         messageEl.textContent = `Valid! You received ${creature.name} - ${reward.description}`;
         messageEl.style.color = '#10b981';
       }
@@ -1328,7 +1613,7 @@ function loadMusic(file) {
   }
 
   currentAudio = new Audio(URL.createObjectURL(file));
-  currentAudio.volume = 0.05; // Start at 5% volume
+  currentAudio.volume = 0; // Start at 0% volume
   
   document.getElementById('nowPlaying').textContent = file.name.replace(/\.[^/.]+$/, ""); // Remove file extension
   
@@ -1368,7 +1653,7 @@ function loadMusicFromPath(musicPath) {
   if (volumeSlider) {
     currentAudio.volume = volumeSlider.value / 100;
   } else {
-    currentAudio.volume = 0.05; // Default to 5% if slider not found
+    currentAudio.volume = 0; // Default to 0% if slider not found
   }
   
   // Use custom song title instead of extracting from filename
