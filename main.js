@@ -416,7 +416,7 @@ function getLuckEffect(rarity, luckLevel) {
   if (luckLevel === 0) return 1; // No luck = no change
   
   // Base multiplier per luck level (easily adjustable)
-  const luckMultiplier = 0.02; // 2% change per luck level
+  const luckMultiplier = 0.1; // 10% change per luck level
   
   // Rarity multipliers (easily adjustable)
   const rarityMultipliers = {
@@ -797,13 +797,18 @@ const modalHtml = `
       </ul>
       <div style="font-weight:700;margin-bottom:8px;color: #ffffffff;text-decoration: underline;text-align: center">Version History</div>
         <ul style="margin-left:20px">
-        <li>Version: 0.4 (The Achievements Update)</li>
+        <li style="font-weight:500; color: #cececeff">Version: 0.4.1</li>
+        <ul style="margin-left:20px">
+          <li>Adjusted Luck Boost pricing and efficiency</li>
+          <li>UI Polish</li>
+          </ul>
+        <li style="font-weight:500; color: #cececeff">Version: 0.4 (The Achievements Update)</li>
         <ul style="margin-left:20px">
           <li>Added achievements! You'll get a popup in the corner when you get one! (currently 12, more to come)</li>
           <li>Music will now start at 0%, can change the volume at will</li>
           <li>More UI polish and refinement</li>
           </ul>
-        <li>Version: 0.3.1</li>
+        <li style="font-weight:500; color: #cececeff">Version: 0.3.1</li>
         <ul style="margin-left:20px">
           <li>Added counter so you know how many Luck/Income upgrades you've purchased</li>
           <li>Added new secret codes</li>
@@ -812,21 +817,21 @@ const modalHtml = `
           <li>Fixed issue where sometimes you had to click multiple times to buy/sell</li>
           <li>Fixed secret codes so now Enter key will redeem as well</li>
           </ul>
-        <li>Version: 0.3 (The Getting Somewhere Update)</li>
+        <li style="font-weight:500; color: #cececeff">Version: 0.3 (The Getting Somewhere Update)</li>
         <ul style="margin-left:20px">
           <li>Added "Stats" that will track a variety of things for your game</li>
           <li>Music player! Volume starts at 5%, click the name to change the song! (Currently 3 songs; credits below)</li>
           <li>Added a background to make the game  look less "bland"</li>
           <li>Even more UI polish</li>
           </ul>
-        <li>Version: 0.2.4</li>
+        <li style="font-weight:500; color: #cececeff">Version: 0.2.4</li>
         <ul style="margin-left:20px">
           <li>Collection will now sort ascending by income for Brainrots</li>
           <li>Offline progression will only show if away for more than 2 minutes</li>
           <li>Slightly adjusted income of various Brainrots</li>
           <li>Even more UI polish</li>
           </ul>
-        <li>Version: 0.2.3</li>
+        <li style="font-weight:500; color: #cececeff">Version: 0.2.3</li>
         <ul style="margin-left:20px">
           <li>Added offline progression (50% efficiency, max 8 hours)</li>
           <li>Changed location of codes button (so now they are SECRET codes)</li>
@@ -834,7 +839,7 @@ const modalHtml = `
           <li>Fancy new title font!</li>
           <li>More UI polish</li>
           </ul>
-        <li>Version: 0.2.2</li>
+        <li style="font-weight:500; color: #cececeff">Version: 0.2.2</li>
         <ul style="margin-left:20px">
           <li>Balanced the odds of rarities Mythic and up</li>
           <li>Repaired luck upgrade so that it *actually* upgrades luck now</li>
@@ -842,47 +847,47 @@ const modalHtml = `
           <li>Adjusted upgrade prices</li>
           <li>More UI updates for better compatibility (hopefully)</li>
           </ul>
-        <li>Version: 0.2.1</li>
+        <li style="font-weight:500; color: #cececeff">Version: 0.2.1</li>
         <ul style="margin-left:20px">
           <li>Updated UI for better user experience on different resolutions</li>
           </ul>
-        <li>Version: 0.2 (The Upgrade-date)</li>
+        <li style="font-weight:500; color: #cececeff">Version: 0.2 (The Upgrade-date)</li>
         <ul style="margin-left:20px">
           <li>Implemented upgrade system that will allow you to upgrade your capacity, luck, and income!</li>
           <li>Major UI changes</li>
           <li>Corrected the "Brainrot God" rarity not displaying color</li>
         </ul>
-        <li>Version: 0.1.5</li>
+        <li style="font-weight:500; color: #cececeff">Version: 0.1.5</li>
         <ul style="margin-left:20px">
           <li>Codes can now only be redeemed once</li>
           <li>Adjusted the "About" section to scroll</li>
           <li>Next update will have HUGE changes, stay tuned!</li>
         </ul>
-        <li>Version: 0.1.4</li>
+        <li style="font-weight:500; color: #cececeff">Version: 0.1.4</li>
         <ul style="margin-left:20px">
           <li>Added rewards codes (You'll have to find where they go!)</li>
           <li>Large overhaul on secret and OG prices and income</li>
         </ul>
-        <li>Version: 0.1.3</li>
+        <li style="font-weight:500; color: #cececeff">Version: 0.1.3</li>
         <ul style="margin-left:20px">
           <li>Added "About" button</li>
           <li>Moved "Reset Save" button into an about section</li>
           <li>Added credits</li>
         </ul>
-        <li>Version: 0.1.2</li>
+        <li style="font-weight:500; color: #cececeff">Version: 0.1.2</li>
         <ul style="margin-left:20px">
           <li>"Cash" has been changed to "Monini" to reflect the brainrots on rotation
           <li>currency changed from "Cash/Sec" to "per Sec"</li>
           <li>Changed color of "OG" rarity to bright green</li>
           <li>Added a version number to keep track of what version we're on</li>
         </ul>
-        <li>Version: 0.1.1</li>
+        <li style="font-weight:500; color: #cececeff">Version: 0.1.1</li>
         <ul style="margin-left:20px">
           <li>Buy button is now unclickable if player doesn't have the money</li>
           <li>New OG brainrots as easter eggs for my friends</li>
           <li>Small stylistic changes</li>
         </ul>
-        <li>Initial Release: 0.1.0</li>
+        <li style="font-weight:500; color: #cececeff">Initial Release: 0.1.0</li>
       </ul>
       <div style="font-weight:700;margin-bottom:8px;color: #ffffffff;text-decoration: underline;text-align: center">Credits</div>
       <ul style="margin-left:20px">
@@ -1198,7 +1203,7 @@ if(sellToggle && sellMenuWrapper && sellMenu){
         return;
       }
       const displayRarity = rarity.replace(/-/g, ' '); // Convert back for display
-      const brainrotText = count === 1 ? 'brainrot' : 'brainrots';
+      const brainrotText = count === 1 ? 'Brainrot' : 'Brainrots';
       message = `Are you sure you want to sell ${count === 1 ? 'the' : 'all'} ${count} ${displayRarity} ${brainrotText}? This cannot be undone.`;
       title = `Sell ${displayRarity} ${brainrotText}`;
     }
@@ -1342,8 +1347,8 @@ function upgradeMaxBrainrots() {
 }
 
 function getLuckPrice() {
-  // Start at $750,000, increase by 3x each level
-  return Math.floor(750000 * Math.pow(3, state.luck));
+  // Start at $750,000, increase by 2x each level
+  return Math.floor(750000 * Math.pow(2, state.luck));
 }
 
 function upgradeLuck() {
