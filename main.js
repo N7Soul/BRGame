@@ -797,6 +797,11 @@ const modalHtml = `
       </ul>
       <div style="font-weight:700;margin-bottom:8px;color: #ffffffff;text-decoration: underline;text-align: center">Version History</div>
         <ul style="margin-left:20px">
+        <li style="font-weight:500; color: #cececeff">Version: 0.4.2</li>
+        <ul style="margin-left:20px">
+          <li>Adjusted Luck Boost pricing</li>
+          <li>UI Polish</li>
+          </ul>
         <li style="font-weight:500; color: #cececeff">Version: 0.4.1</li>
         <ul style="margin-left:20px">
           <li>Adjusted Luck Boost pricing and efficiency</li>
@@ -1347,8 +1352,8 @@ function upgradeMaxBrainrots() {
 }
 
 function getLuckPrice() {
-  // Start at $750,000, increase by 2x each level
-  return Math.floor(750000 * Math.pow(2, state.luck));
+  // Start at $500,000, increase by 1.5x each level
+  return Math.floor(500000 * Math.pow(1.5, state.luck));
 }
 
 function upgradeLuck() {
